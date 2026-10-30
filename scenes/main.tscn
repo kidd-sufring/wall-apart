@@ -1,0 +1,444 @@
+[gd_scene format=3 uid="uid://d1ebvdjjs8wgu"]
+
+[ext_resource type="Script" uid="uid://bd0mxru6hhu6m" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="PackedScene" path="res://scenes/survivor.tscn" id="2_survivor"]
+[ext_resource type="PackedScene" path="res://scenes/hunter.tscn" id="3_hunter"]
+[ext_resource type="Script" uid="uid://cmg2iuyf58l0r" path="res://scripts/camera_rig.gd" id="4_camera"]
+[ext_resource type="PackedScene" path="res://scenes/terrain.tscn" id="5_terrain"]
+[ext_resource type="PackedScene" path="res://scenes/maze_map.tscn" id="6_maze_map"]
+[ext_resource type="Script" uid="uid://4aq2biciskvc" path="res://scripts/slow_zone.gd" id="7_eb6dy"]
+[ext_resource type="Script" uid="uid://btdfyym06v1wx" path="res://scripts/navigation_region.gd" id="7_nav_region"]
+[ext_resource type="PackedScene" uid="uid://j7uusr58o2ic" path="res://models/dungeon_room.glb" id="8_dungeon"]
+[ext_resource type="PackedScene" uid="uid://dqi5w5wmv3c1r" path="res://models/spider_nest_3.glb" id="8_trceg"]
+[ext_resource type="PackedScene" uid="uid://hnvt5i8nmm7k" path="res://scenes/game_hud.tscn" id="9_hud"]
+[ext_resource type="PackedScene" uid="uid://bep633d7h6nki" path="res://scenes/result_popup.tscn" id="10_result"]
+[ext_resource type="Script" uid="uid://cvdsrm6umae24" path="res://scripts/item_spawner.gd" id="11_spawner"]
+[ext_resource type="PackedScene" path="res://scenes/items/stone_item.tscn" id="12_stone"]
+[ext_resource type="PackedScene" path="res://scenes/items/pumpkin_item.tscn" id="13_pumpkin"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
+sky_top_color = Color(0.045, 0.028, 0.1, 1)
+sky_horizon_color = Color(0.17, 0.1, 0.27, 1)
+ground_bottom_color = Color(0.02, 0.015, 0.035, 1)
+ground_horizon_color = Color(0.09, 0.055, 0.15, 1)
+
+[sub_resource type="Sky" id="Sky_main"]
+sky_material = SubResource("ProceduralSkyMaterial_sky")
+
+[sub_resource type="Environment" id="Environment_main"]
+background_mode = 2
+background_energy_multiplier = 0.55
+sky = SubResource("Sky_main")
+ambient_light_source = 2
+ambient_light_color = Color(0.55, 0.43, 0.72, 1)
+ambient_light_energy = 1.2
+reflected_light_source = 2
+tonemap_mode = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8poak"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_j2kd6"]
+size = Vector3(1.3, 6, 4.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_j6iho"]
+size = Vector3(1.3, 6, 5.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tefeu"]
+size = Vector3(1.3, 6, 5.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qq8kn"]
+size = Vector3(1.3, 6, 10.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o6xl0"]
+size = Vector3(1.4, 6, 10.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tipki"]
+size = Vector3(1.4, 5.7354736, 8.9)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_85g3d"]
+size = Vector3(1.3, 5.3999023, 9)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_choun"]
+size = Vector3(1.3, 6, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ya4ey"]
+size = Vector3(1.3, 3.0239258, 8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eb6dy"]
+size = Vector3(1.3, 2.2919922, 7.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_trceg"]
+size = Vector3(1, 6, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a8y0u"]
+size = Vector3(1.3, 3.062622, 8.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oxjej"]
+size = Vector3(40, 6, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jkv2x"]
+size = Vector3(2, 6, 40)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_eb6dy"]
+height = 2.4
+radius = 3.8
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_trceg"]
+height = 2.4
+radius = 3.8
+
+[node name="Main" type="Node3D" unique_id=604094360]
+script = ExtResource("1_main")
+debug_player_is_hunter = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2124276452]
+environment = SubResource("Environment_main")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1552219589]
+transform = Transform3D(0.8253356, 0.44229966, -0.35098737, 0, 0.62161, 0.7833269, 0.5646425, -0.6465076, 0.51303685, 0, 62.886776, 0)
+light_color = Color(0.75, 0.7, 1, 1)
+light_energy = 1.05
+shadow_enabled = true
+
+[node name="Ground" parent="." unique_id=922232620 groups=["nav_source"] instance=ExtResource("5_terrain")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.003, 0, 0)
+
+[node name="ArenaNavigation" type="NavigationRegion3D" parent="." unique_id=986907180]
+script = ExtResource("7_nav_region")
+
+[node name="Map" type="Node3D" parent="." unique_id=1001048297 groups=["nav_source"]]
+
+[node name="MazeMap" parent="Map" unique_id=252839648 instance=ExtResource("6_maze_map")]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, -3, 0)
+
+[node name="DungeonRoom" parent="Map" unique_id=851982465 instance=ExtResource("8_dungeon")]
+transform = Transform3D(0.48, 0, 0, 0, 0.48, 0, 0, 0, 0.48, 0, -3, 0)
+
+[node name="Obstacles" type="Node3D" parent="Map" unique_id=2031089078]
+
+[node name="box" type="StaticBody3D" parent="Map/Obstacles" unique_id=1024459642]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Obstacles/box" unique_id=1179918259]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.9796114, 0.5, 4.826)
+shape = SubResource("BoxShape3D_8poak")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Map/Obstacles/box" unique_id=1207151245]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.3124385, 0.5249691, -10.498255)
+shape = SubResource("BoxShape3D_8poak")
+
+[node name="InnerWall" type="StaticBody3D" parent="Map/Obstacles" unique_id=795054997]
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Obstacles/InnerWall" unique_id=1577561067]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.001, -0.35625792, -4.794)
+shape = SubResource("BoxShape3D_j2kd6")
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="Map/Obstacles/InnerWall" unique_id=1535791074]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.001, 3, -4.794)
+visible = false
+radius = 0.8
+height = 6.0
+affect_navigation_mesh = true
+avoidance_enabled = false
+
+[node name="InnerWall2" type="StaticBody3D" parent="Map/Obstacles" unique_id=1875369232]
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Obstacles/InnerWall2" unique_id=1456794916]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4.9, -0.35891736, -3.918)
+shape = SubResource("BoxShape3D_j2kd6")
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="Map/Obstacles/InnerWall2" unique_id=46529222]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4.9, 3, -3.918)
+visible = false
+radius = 0.8
+height = 6.0
+affect_navigation_mesh = true
+avoidance_enabled = false
+
+[node name="InnerWall3" type="StaticBody3D" parent="Map/Obstacles" unique_id=1411976376]
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Obstacles/InnerWall3" unique_id=666577685]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.323, -0.4299035, 5.497)
+shape = SubResource("BoxShape3D_j6iho")
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="Map/Obstacles/InnerWall3" unique_id=174959011]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.323, 3, 5.497)
+visible = false
+radius = 0.8
+height = 6.0
+affect_navigation_mesh = true
+avoidance_enabled = false
+
+[node name="InnerWall4" type="StaticBody3D" parent="Map/Obstacles" unique_id=72946869]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Obstacles/InnerWall4" unique_id=2010152699]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.142, -0.72132134, 5.581)
+shape = SubResource("BoxShape3D_tefeu")
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="Map/Obstacles/InnerWall4" unique_id=1518069129]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.142, 3, 5.581)
+visible = false
+radius = 0.8
+height = 6.0
+affect_navigation_mesh = true
+avoidance_enabled = false
+
+[node name="Outerwall" type="StaticBody3D" parent="Map/Obstacles" unique_id=1353408002]
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Obstacles/Outerwall" unique_id=767247372]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.752071, 0.10052347, -8.101971)
+shape = SubResource("BoxShape3D_qq8kn")
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="Map/Obstacles/Outerwall" unique_id=1148030351]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.752071, 3, -8.101971)
+radius = 0.8
+height = 6.0
+affect_navigation_mesh = true
+avoidance_enabled = false
+
+[node name="Outerwall2" type="StaticBody3D" parent="Map/Obstacles" unique_id=942246413]
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Obstacles/Outerwall2" unique_id=1659372935]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 7.519636, 3, -12.710485)
+shape = SubResource("BoxShape3D_o6xl0")
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="Map/Obstacles/Outerwall2" unique_id=1565223707]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 7.519636, 3, -12.710485)
+visible = false
+radius = 0.8
+height = 6.0
+affect_navigation_mesh = true
+avoidance_enabled = false
+
+[node name="Outerwall3" type="StaticBody3D" parent="Map/Obstacles" unique_id=1398055936]
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Obstacles/Outerwall3" unique_id=1099052089]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -7.7319603, 2.8677368, -12.545445)
+shape = SubResource("BoxShape3D_tipki")
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="Map/Obstacles/Outerwall3" unique_id=1575283121]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -7.7319603, 3, -12.545445)
+visible = false
+radius = 0.8
+height = 6.0
+affect_navigation_mesh = true
+avoidance_enabled = false
+
+[node name="Outerwall4" type="StaticBody3D" parent="Map/Obstacles" unique_id=50737600]
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Obstacles/Outerwall4" unique_id=356495799]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.666012, 2.4548059, -7.92794)
+shape = SubResource("BoxShape3D_85g3d")
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="Map/Obstacles/Outerwall4" unique_id=1316411225]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.666012, 3, -7.92794)
+visible = false
+radius = 0.8
+height = 6.0
+affect_navigation_mesh = true
+avoidance_enabled = false
+
+[node name="Outerwall5" type="StaticBody3D" parent="Map/Obstacles" unique_id=686837349]
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Obstacles/Outerwall5" unique_id=1496902223]
+transform = Transform3D(0.9992604, 0, 0.038452227, 0, 1, 0, -0.038452227, 0, 0.9992604, -12.156598, 2.6999512, 7.78656)
+shape = SubResource("BoxShape3D_85g3d")
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="Map/Obstacles/Outerwall5" unique_id=1564214895]
+transform = Transform3D(0.9992604, 0, 0.038452227, 0, 1, 0, -0.038452227, 0, 0.9992604, -12.156598, 3, 7.78656)
+visible = false
+radius = 0.8
+height = 6.0
+affect_navigation_mesh = true
+avoidance_enabled = false
+
+[node name="Outerwall6" type="StaticBody3D" parent="Map/Obstacles" unique_id=1820851668]
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Obstacles/Outerwall6" unique_id=2084716261]
+transform = Transform3D(0.91255355, 0, 0.40895718, 0, 1, 0, -0.40895718, 0, 0.91255355, -11.439865, 2.5258393, 13.423699)
+shape = SubResource("BoxShape3D_choun")
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="Map/Obstacles/Outerwall6" unique_id=1261530837]
+transform = Transform3D(0.91255355, 0, 0.40895718, 0, 1, 0, -0.40895718, 0, 0.91255355, -11.439865, 3, 13.423699)
+visible = false
+radius = 0.8
+height = 6.0
+affect_navigation_mesh = true
+avoidance_enabled = false
+
+[node name="Outerwall7" type="StaticBody3D" parent="Map/Obstacles" unique_id=1363204055]
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Obstacles/Outerwall7" unique_id=564216701]
+transform = Transform3D(-4.3711392e-08, 0, 1.0000001, 0, 1, 0, -1.0000001, 0, -4.3711392e-08, -7.426992, 1.5119629, 14.201583)
+shape = SubResource("BoxShape3D_ya4ey")
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="Map/Obstacles/Outerwall7" unique_id=1347532863]
+transform = Transform3D(-4.3711392e-08, 0, 1.0000001, 0, 1, 0, -1.0000001, 0, -4.3711392e-08, -7.426992, 3, 14.201583)
+visible = false
+radius = 0.8
+height = 6.0
+affect_navigation_mesh = true
+avoidance_enabled = false
+
+[node name="Outerwall8" type="StaticBody3D" parent="Map/Obstacles" unique_id=633698108]
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Obstacles/Outerwall8" unique_id=751861340]
+transform = Transform3D(-4.3711392e-08, 0, 1.0000001, 0, 1, 0, -1.0000001, 0, -4.3711392e-08, 7.8460693, 1.1459961, 14.036452)
+shape = SubResource("BoxShape3D_eb6dy")
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="Map/Obstacles/Outerwall8" unique_id=519585093]
+transform = Transform3D(-4.3711392e-08, 0, 1.0000001, 0, 1, 0, -1.0000001, 0, -4.3711392e-08, 7.8460693, 3, 14.036452)
+visible = false
+radius = 0.8
+height = 6.0
+affect_navigation_mesh = true
+avoidance_enabled = false
+
+[node name="Outerwall9" type="StaticBody3D" parent="Map/Obstacles" unique_id=1609825083]
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Obstacles/Outerwall9" unique_id=1837454302]
+transform = Transform3D(-0.7804973, 0, 0.6251594, 0, 1, 0, -0.6251594, 0, -0.7804973, 12.026577, -0.6108341, 12.956823)
+shape = SubResource("BoxShape3D_trceg")
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="Map/Obstacles/Outerwall9" unique_id=1735327907]
+transform = Transform3D(-0.7804973, 0, 0.6251594, 0, 1, 0, -0.6251594, 0, -0.7804973, 12.026577, 3, 12.956823)
+visible = false
+radius = 0.8
+height = 6.0
+affect_navigation_mesh = true
+avoidance_enabled = false
+
+[node name="Outerwall10" type="StaticBody3D" parent="Map/Obstacles" unique_id=1900960830]
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Obstacles/Outerwall10" unique_id=2044284340]
+transform = Transform3D(1.0000001, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 12.789561, 1.531311, 7.6930313)
+shape = SubResource("BoxShape3D_a8y0u")
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="Map/Obstacles/Outerwall10" unique_id=978866228]
+transform = Transform3D(1.0000001, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 12.789561, 3, 7.6930313)
+visible = false
+radius = 0.8
+height = 6.0
+affect_navigation_mesh = true
+avoidance_enabled = false
+
+[node name="Boundnary" type="StaticBody3D" parent="Map/Obstacles" unique_id=238475763]
+visible = false
+collision_layer = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Obstacles/Boundnary" unique_id=899358757]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 21)
+shape = SubResource("BoxShape3D_oxjej")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Map/Obstacles/Boundnary" unique_id=1097067408]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -21)
+shape = SubResource("BoxShape3D_oxjej")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Map/Obstacles/Boundnary" unique_id=208289525]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 3, 0)
+shape = SubResource("BoxShape3D_jkv2x")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Map/Obstacles/Boundnary" unique_id=1911216160]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 3, 0)
+shape = SubResource("BoxShape3D_jkv2x")
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="Map/Obstacles/Boundnary" unique_id=514765736]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 21)
+radius = 1.0
+height = 6.0
+vertices = PackedVector3Array(-20, 0, -1, 20, 0, -1, 20, 0, 1, -20, 0, 1)
+affect_navigation_mesh = true
+carve_navigation_mesh = true
+avoidance_enabled = false
+
+[node name="NavigationObstacle3D2" type="NavigationObstacle3D" parent="Map/Obstacles/Boundnary" unique_id=1866108099]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -21)
+radius = 1.0
+height = 6.0
+vertices = PackedVector3Array(-20, 0, -1, 20, 0, -1, 20, 0, 1, -20, 0, 1)
+affect_navigation_mesh = true
+carve_navigation_mesh = true
+avoidance_enabled = false
+
+[node name="NavigationObstacle3D3" type="NavigationObstacle3D" parent="Map/Obstacles/Boundnary" unique_id=2085834398]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 0, 0)
+radius = 1.0
+height = 6.0
+vertices = PackedVector3Array(-1, 0, -20, 1, 0, -20, 1, 0, 20, -1, 0, 20)
+affect_navigation_mesh = true
+carve_navigation_mesh = true
+avoidance_enabled = false
+
+[node name="NavigationObstacle3D4" type="NavigationObstacle3D" parent="Map/Obstacles/Boundnary" unique_id=333936608]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 0, 0)
+radius = 1.0
+height = 6.0
+vertices = PackedVector3Array(-1, 0, -20, 1, 0, -20, 1, 0, 20, -1, 0, 20)
+affect_navigation_mesh = true
+carve_navigation_mesh = true
+avoidance_enabled = false
+
+[node name="SpiderNest3" parent="Map" unique_id=339564749 instance=ExtResource("8_trceg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 0)
+
+[node name="WebSlowZone" type="Area3D" parent="Map/SpiderNest3" unique_id=1897518717]
+collision_layer = 0
+collision_mask = 6
+monitorable = false
+script = ExtResource("7_eb6dy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/SpiderNest3/WebSlowZone" unique_id=1125321156]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CylinderShape3D_eb6dy")
+
+[node name="SpiderNest4" parent="Map" unique_id=1440106961 instance=ExtResource("8_trceg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 0)
+
+[node name="WebSlowZone" type="Area3D" parent="Map/SpiderNest4" unique_id=1472091049]
+collision_layer = 0
+collision_mask = 6
+monitorable = false
+script = ExtResource("7_eb6dy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/SpiderNest4/WebSlowZone" unique_id=1695892972]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CylinderShape3D_trceg")
+
+[node name="Survivor" parent="." unique_id=781214840 groups=["player"] instance=ExtResource("2_survivor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0.1, 0)
+
+[node name="Hunter" parent="." unique_id=9530606 groups=["hunter"] instance=ExtResource("3_hunter")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.1, 0)
+
+[node name="CameraRig" type="Node3D" parent="." unique_id=1362532807]
+script = ExtResource("4_camera")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraRig" unique_id=949470561]
+spring_length = 4.5
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig/SpringArm3D" unique_id=998129092]
+current = true
+fov = 70.0
+
+[node name="GameHUD" parent="." unique_id=1896598958 instance=ExtResource("9_hud")]
+
+[node name="ResultPopup" parent="." unique_id=203972969 instance=ExtResource("10_result")]
+
+[node name="ItemSpawner" type="Node3D" parent="." unique_id=1881766742]
+script = ExtResource("11_spawner")
+item_scenes = Array[PackedScene]([ExtResource("12_stone"), ExtResource("13_pumpkin")])
+min_count = 8
+max_count = 12
+spawn_radius = 9.0

@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/pumpkin_slime_puddle.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/props/pumpkin/splat/splat03.png" id="2_splat"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_puddle"]
+size = Vector2(3.6, 3.6)
+
+[sub_resource type="Shader" id="Shader_orange_slime"]
+code = "shader_type spatial;
+render_mode blend_mix, cull_disabled, depth_draw_never, shadows_disabled;
+
+// 粘液滩：splat 贴图的 alpha 决定形状，再叠一层径向遮罩让边缘柔和淡出
+uniform sampler2D splat_tex : source_color, filter_linear_mipmap, repeat_disable;
+uniform vec4 tint : source_color = vec4(1.0, 0.5, 0.0, 1.0);
+uniform float glow = 0.4;
+uniform float edge_softness = 0.25;
+uniform float roughness_value = 0.1;
+uniform float opacity = 0.8;
+
+void fragment() {
+	float shape = texture(splat_tex, UV).a;
+	float r = length(UV - vec2(0.5)) * 2.0;
+	float mask = 1.0 - smoothstep(1.0 - edge_softness, 1.0, r);
+	ALBEDO = tint.rgb;
+	ALPHA = shape * mask * tint.a * opacity;
+	ROUGHNESS = roughness_value;
+	METALLIC = 0.0;
+	EMISSION = tint.rgb * glow * tint.a;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_orange_slime"]
+resource_local_to_scene = true
+render_priority = 0
+shader = SubResource("Shader_orange_slime")
+shader_parameter/splat_tex = ExtResource("2_splat")
+shader_parameter/tint = Color(1, 0.5, 0, 1)
+shader_parameter/glow = 0.4
+shader_parameter/edge_softness = 0.25
+shader_parameter/roughness_value = 0.1
+shader_parameter/opacity = 0.8
+
+[node name="PumpkinSlimePuddle" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+cast_shadow = 0
+mesh = SubResource("QuadMesh_puddle")
+surface_material_override/0 = SubResource("ShaderMaterial_orange_slime")

@@ -1,0 +1,77 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/hunter.gd" id="1_hunter"]
+[ext_resource type="PackedScene" path="res://models/hunter.glb" id="2_model"]
+[ext_resource type="Script" path="res://scripts/hunter_wall_avoid_follow.gd" id="3_hwaf"]
+[ext_resource type="Script" path="res://scripts/hunter_ghost_skill.gd" id="4_ghost"]
+[ext_resource type="PackedScene" path="res://models/hunter_skill.glb" id="5_ghost_model"]
+[ext_resource type="Script" path="res://scripts/network_sync.gd" id="6_netsync"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 0.5
+height = 1.7
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hit"]
+radius = 0.6
+height = 1.7
+
+[node name="Hunter" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 11
+script = ExtResource("1_hunter")
+walk_speed = 3.0
+run_speed = 6.0
+jump_velocity = 4.2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+shape = SubResource("CapsuleShape3D_body")
+
+[node name="Model" parent="." instance=ExtResource("2_model")]
+
+[node name="HandAttachment" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.35)
+
+[node name="ClimbCheck" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+target_position = Vector3(0, 0, -0.6)
+collision_mask = 1
+
+[node name="HitBox" type="Area3D" parent="."]
+collision_layer = 4
+collision_mask = 2
+monitoring = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+shape = SubResource("CapsuleShape3D_hit")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.35
+target_desired_distance = 0.7
+radius = 0.6
+height = 1.7
+max_speed = 6.0
+avoidance_enabled = false
+
+[node name="HWAF" type="Node" parent="."]
+script = ExtResource("3_hwaf")
+move_speed = 6.0
+agent_path = NodePath("../NavigationAgent3D")
+
+[node name="GhostModelRoot" type="Node3D" parent="."]
+
+[node name="GhostSkill" type="Node" parent="."]
+script = ExtResource("4_ghost")
+ghost_model_scene = ExtResource("5_ghost_model")
+wall_collision_mask = 1
+exit_clearance = 0.8
+max_duration = 3.0
+hard_max_duration = 10.0
+cooldown_seconds = 10.0
+cooldown_starts_on_end = true
+ghost_ai_speed = 6.0
+
+[node name="NetworkSync" type="Node" parent="."]
+script = ExtResource("6_netsync")
+role_id = &"hunter_sid"

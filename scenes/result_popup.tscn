@@ -1,0 +1,257 @@
+[gd_scene format=3 uid="uid://bep633d7h6nki"]
+
+[ext_resource type="Script" uid="uid://b62jdecutx1fe" path="res://scripts/result_popup.gd" id="1_result"]
+[ext_resource type="Texture2D" uid="uid://c76h0uac5x5dq" path="res://ui/window.png" id="2_window"]
+[ext_resource type="Texture2D" uid="uid://bp6uqab776d7w" path="res://ui/close.png" id="3_close"]
+[ext_resource type="Texture2D" uid="uid://bke3wmvl4g4s8" path="res://ui/timer.png" id="4_timer"]
+[ext_resource type="Texture2D" uid="uid://i0gfq4qqxcsn" path="res://ui/hp_100.png" id="5_hp100"]
+[ext_resource type="Texture2D" uid="uid://dsponwb3voltn" path="res://ui/button.png" id="6_btn"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_card"]
+texture = ExtResource("2_window")
+texture_margin_left = 56.0
+texture_margin_top = 56.0
+texture_margin_right = 56.0
+texture_margin_bottom = 56.0
+
+[sub_resource type="SystemFont" id="SystemFont_title"]
+font_names = PackedStringArray("Microsoft YaHei", "SimHei", "Noto Sans CJK SC", "Arial")
+font_weight = 700
+subpixel_positioning = 0
+
+[sub_resource type="SystemFont" id="SystemFont_ui"]
+font_names = PackedStringArray("Microsoft YaHei", "SimHei", "Noto Sans CJK SC", "Arial")
+subpixel_positioning = 0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn"]
+content_margin_left = 20.0
+content_margin_top = 10.0
+content_margin_right = 20.0
+content_margin_bottom = 10.0
+texture = ExtResource("6_btn")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_pressed"]
+content_margin_left = 20.0
+content_margin_top = 10.0
+content_margin_right = 20.0
+content_margin_bottom = 10.0
+texture = ExtResource("6_btn")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+modulate_color = Color(0.8, 0.77, 0.72, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_hover"]
+content_margin_left = 20.0
+content_margin_top = 10.0
+content_margin_right = 20.0
+content_margin_bottom = 10.0
+texture = ExtResource("6_btn")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+modulate_color = Color(1.14, 1.1, 1.02, 1)
+
+[node name="ResultPopup" type="CanvasLayer" unique_id=624101035]
+process_mode = 3
+layer = 100
+script = ExtResource("1_result")
+
+[node name="Root" type="Control" parent="." unique_id=799349605]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="Root" unique_id=1871385800]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.8)
+
+[node name="Center" type="CenterContainer" parent="Root" unique_id=811365541]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Window" type="Panel" parent="Root/Center" unique_id=537112898]
+custom_minimum_size = Vector2(860, 560)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_card")
+
+[node name="Close" type="TextureButton" parent="Root/Center/Window" unique_id=286753592]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -75.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 75.0
+grow_horizontal = 0
+texture_normal = ExtResource("3_close")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Content" type="MarginContainer" parent="Root/Center/Window" unique_id=385006909]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 48.0
+offset_top = 48.0
+offset_right = -48.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Root/Center/Window/Content" unique_id=2002659800]
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="Title" type="Label" parent="Root/Center/Window/Content/VBox" unique_id=1911066209]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0.08, 0.05, 0.03, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = SubResource("SystemFont_title")
+theme_override_font_sizes/font_size = 64
+text = "胜 利"
+horizontal_alignment = 1
+
+[node name="Divider" type="ColorRect" parent="Root/Center/Window/Content/VBox" unique_id=1907321694]
+custom_minimum_size = Vector2(320, 1)
+layout_mode = 2
+size_flags_horizontal = 4
+color = Color(0.6, 0.5, 0.34, 0.65)
+
+[node name="Subtitle" type="Label" parent="Root/Center/Window/Content/VBox" unique_id=480451104]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.78, 0.73, 0.62, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 20
+text = "逃生者胜利"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="Root/Center/Window/Content/VBox" unique_id=1926754067]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="StatsRow" type="HBoxContainer" parent="Root/Center/Window/Content/VBox" unique_id=1747017269]
+layout_mode = 2
+theme_override_constants/separation = 56
+alignment = 1
+
+[node name="TimeStat" type="HBoxContainer" parent="Root/Center/Window/Content/VBox/StatsRow" unique_id=729587733]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="TimeIcon" type="Control" parent="Root/Center/Window/Content/VBox/StatsRow/TimeStat" unique_id=587586714]
+custom_minimum_size = Vector2(40, 48)
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="Root/Center/Window/Content/VBox/StatsRow/TimeStat/TimeIcon" unique_id=985763228]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_timer")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TimeValue" type="Label" parent="Root/Center/Window/Content/VBox/StatsRow/TimeStat/TimeIcon" unique_id=601037669]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 3.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.96, 0.86, 1)
+theme_override_colors/font_outline_color = Color(0.1, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = SubResource("SystemFont_title")
+theme_override_font_sizes/font_size = 18
+text = "12"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TimeCaption" type="Label" parent="Root/Center/Window/Content/VBox/StatsRow/TimeStat" unique_id=1691057769]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.68, 0.6, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 16
+text = "剩余时间"
+vertical_alignment = 1
+
+[node name="HpStat" type="HBoxContainer" parent="Root/Center/Window/Content/VBox/StatsRow" unique_id=1803030563]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="HpCaption" type="Label" parent="Root/Center/Window/Content/VBox/StatsRow/HpStat" unique_id=229915671]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.68, 0.6, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 16
+text = "逃生者生命"
+vertical_alignment = 1
+
+[node name="HpBar" type="TextureRect" parent="Root/Center/Window/Content/VBox/StatsRow/HpStat" unique_id=2144488630]
+custom_minimum_size = Vector2(220, 34)
+layout_mode = 2
+texture = ExtResource("5_hp100")
+expand_mode = 1
+
+[node name="Buttons" type="HBoxContainer" parent="Root/Center/Window/Content/VBox" unique_id=1857482302]
+layout_mode = 2
+theme_override_constants/separation = 28
+alignment = 1
+
+[node name="RestartButton" type="Button" parent="Root/Center/Window/Content/VBox/Buttons" unique_id=434026581]
+custom_minimum_size = Vector2(220, 110)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 0.97, 0.9, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_hover")
+text = "重新开始"
+
+[node name="MenuButton" type="Button" parent="Root/Center/Window/Content/VBox/Buttons" unique_id=2002392871]
+custom_minimum_size = Vector2(220, 110)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 0.97, 0.9, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_hover")
+text = "返回主菜单"
+
+[connection signal="pressed" from="Root/Center/Window/Close" to="." method="_on_menu_pressed"]
+[connection signal="pressed" from="Root/Center/Window/Content/VBox/Buttons/RestartButton" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="Root/Center/Window/Content/VBox/Buttons/MenuButton" to="." method="_on_menu_pressed"]

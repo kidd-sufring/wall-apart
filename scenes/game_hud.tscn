@@ -1,0 +1,210 @@
+[gd_scene format=3 uid="uid://hnvt5i8nmm7k"]
+
+[ext_resource type="Script" uid="uid://c7014noe8g0av" path="res://scripts/game_hud.gd" id="1_hud"]
+[ext_resource type="Texture2D" uid="uid://bke3wmvl4g4s8" path="res://ui/timer.png" id="2_timer"]
+[ext_resource type="Texture2D" uid="uid://i0gfq4qqxcsn" path="res://ui/hp_100.png" id="3_hp"]
+[ext_resource type="Texture2D" uid="uid://dfw6de86jldf7" path="res://ui/skill_hunter.png" id="5_ghost"]
+[ext_resource type="Texture2D" uid="uid://p1sk3ng0o3jc" path="res://ui/skill_survivor.png" id="6_shield"]
+[ext_resource type="Shader" uid="uid://bpsgc1l805i14" path="res://shaders/cooldown_shade.gdshader" id="7_shade_shader"]
+
+[sub_resource type="SystemFont" id="SystemFont_title"]
+font_names = PackedStringArray("Microsoft YaHei", "SimHei", "Noto Sans CJK SC", "Arial")
+font_weight = 700
+subpixel_positioning = 0
+
+[sub_resource type="SystemFont" id="SystemFont_ui"]
+font_names = PackedStringArray("Microsoft YaHei", "SimHei", "Noto Sans CJK SC", "Arial")
+subpixel_positioning = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_shade"]
+shader = ExtResource("7_shade_shader")
+shader_parameter/ratio = 1.0
+shader_parameter/shade_color = Color(0.02, 0.015, 0.04, 0.78)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_skill_border"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="GameHUD" type="CanvasLayer" unique_id=249152575]
+layer = 10
+script = ExtResource("1_hud")
+
+[node name="Root" type="Control" parent="." unique_id=416842469]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Clock" type="Control" parent="Root" unique_id=196665773]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -48.0
+offset_top = 8.0
+offset_right = 48.0
+offset_bottom = 124.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="Icon" type="TextureRect" parent="Root/Clock" unique_id=553674512]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_timer")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TimeValue" type="Label" parent="Root/Clock" unique_id=1795425942]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 35.0
+offset_bottom = -23.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.98, 0.95, 0.9, 1)
+theme_override_colors/font_outline_color = Color(0.07, 0.03, 0.12, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = SubResource("SystemFont_title")
+theme_override_font_sizes/font_size = 40
+text = "30"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ReadyLabel" type="Label" parent="Root" unique_id=2050467462]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.95)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.65)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 120
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HPRoot" type="Control" parent="Root" unique_id=1683264223]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = -98.0
+offset_right = 330.0
+offset_bottom = -37.0
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="HpBar" type="TextureRect" parent="Root/HPRoot" unique_id=74056874]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_hp")
+expand_mode = 1
+
+[node name="SkillRoot" type="Control" parent="Root" unique_id=408407921]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -204.0
+offset_top = -244.0
+offset_right = -34.0
+offset_bottom = -34.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="IconGhost" type="TextureRect" parent="Root/SkillRoot" unique_id=1378616291]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 22.0
+offset_right = 144.0
+offset_bottom = 162.0
+mouse_filter = 2
+texture = ExtResource("5_ghost")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="IconShield" type="TextureRect" parent="Root/SkillRoot" unique_id=122952510]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 22.0
+offset_right = 144.0
+offset_bottom = 162.0
+mouse_filter = 2
+texture = ExtResource("6_shield")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Shade" type="ColorRect" parent="Root/SkillRoot" unique_id=1427806961]
+material = SubResource("ShaderMaterial_shade")
+layout_mode = 0
+offset_left = 26.0
+offset_top = 33.0
+offset_right = 144.0
+offset_bottom = 151.0
+mouse_filter = 2
+
+[node name="Border" type="Panel" parent="Root/SkillRoot" unique_id=1591198696]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 172.0
+offset_bottom = 192.0
+scale = Vector2(0.9972371, 0.97627676)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_skill_border")
+
+[node name="SkillName" type="Label" parent="Root/SkillRoot" unique_id=240544]
+layout_mode = 0
+offset_top = 192.0
+offset_right = 170.0
+offset_bottom = 218.0
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 17
+text = "幽灵状态"
+horizontal_alignment = 1
+
+[node name="KeyHint" type="Label" parent="Root/SkillRoot" unique_id=256054026]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 20.0
+offset_right = 148.0
+offset_bottom = 45.0
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 18
+text = "F"
+horizontal_alignment = 1

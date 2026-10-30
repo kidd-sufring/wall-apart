@@ -1,0 +1,325 @@
+[gd_scene format=3 uid="uid://drqfn2k1epo5x"]
+
+[ext_resource type="Script" uid="uid://4ktn3lsvpojt" path="res://scripts/tutorial_manager.gd" id="1_manager"]
+[ext_resource type="PackedScene" path="res://scenes/hunter.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/items/stone_item.tscn" id="3_stone"]
+[ext_resource type="PackedScene" path="res://scenes/items/pumpkin_item.tscn" id="4_pumpkin"]
+[ext_resource type="Script" uid="uid://cmg2iuyf58l0r" path="res://scripts/camera_rig.gd" id="5_camera"]
+[ext_resource type="Script" uid="uid://4aq2biciskvc" path="res://scripts/slow_zone.gd" id="6_slow"]
+[ext_resource type="Script" uid="uid://nwxl245x823g" path="res://scripts/tutorial_dummy_target.gd" id="7_dummy"]
+[ext_resource type="Script" uid="uid://c8s1girvbtxwa" path="res://scripts/tutorial_trigger.gd" id="8_trigger"]
+[ext_resource type="PackedScene" uid="uid://dqi5w5wmv3c1r" path="res://models/spider_nest_3.glb" id="9_web"]
+[ext_resource type="Texture2D" uid="uid://c76h0uac5x5dq" path="res://ui/window.png" id="10_window"]
+[ext_resource type="Texture2D" uid="uid://dsponwb3voltn" path="res://ui/button.png" id="11_button"]
+[ext_resource type="PackedScene" path="res://scenes/terrain.tscn" id="12_terrain"]
+[ext_resource type="Texture2D" uid="uid://bp6uqab776d7w" path="res://ui/close.png" id="13_close"]
+[ext_resource type="PackedScene" path="res://scenes/survivor.tscn" id="14_survivor"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
+sky_top_color = Color(0.32, 0.48, 0.72, 1)
+sky_horizon_color = Color(0.68, 0.74, 0.8, 1)
+ground_bottom_color = Color(0.18, 0.17, 0.16, 1)
+ground_horizon_color = Color(0.5, 0.5, 0.5, 1)
+
+[sub_resource type="Sky" id="Sky_env"]
+sky_material = SubResource("ProceduralSkyMaterial_sky")
+
+[sub_resource type="Environment" id="Environment_env"]
+background_mode = 2
+sky = SubResource("Sky_env")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.6
+ambient_light_energy = 0.8
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_arrow"]
+albedo_color = Color(1, 0.85, 0.2, 1)
+emission_enabled = true
+emission = Color(1, 0.8, 0.2, 1)
+emission_energy_multiplier = 0.8
+
+[sub_resource type="PrismMesh" id="PrismMesh_arrow"]
+material = SubResource("StandardMaterial3D_arrow")
+size = Vector3(0.7, 0.7, 0.7)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dummy"]
+albedo_color = Color(0.82, 0.3, 0.3, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_dummy"]
+material = SubResource("StandardMaterial3D_dummy")
+radius = 0.4
+height = 1.8
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dummy"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_slow"]
+radius = 2.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_goal"]
+transparency = 1
+albedo_color = Color(0.4, 1, 0.6, 0.5)
+emission_enabled = true
+emission = Color(0.3, 1, 0.5, 1)
+emission_energy_multiplier = 1.2
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_goal"]
+material = SubResource("StandardMaterial3D_goal")
+top_radius = 1.5
+bottom_radius = 1.5
+height = 0.06
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_goal"]
+radius = 1.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
+albedo_color = Color(0.56, 0.57, 0.6, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall"]
+material = SubResource("StandardMaterial3D_wall")
+size = Vector3(20, 3, 0.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall"]
+size = Vector3(20, 3, 0.6)
+
+[sub_resource type="SystemFont" id="SystemFont_ui"]
+font_names = PackedStringArray("Microsoft YaHei", "SimHei", "Noto Sans CJK SC", "Arial")
+subpixel_positioning = 0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_panel"]
+content_margin_left = 48.0
+content_margin_top = 40.0
+content_margin_right = 48.0
+content_margin_bottom = 40.0
+texture = ExtResource("10_window")
+texture_margin_left = 60.0
+texture_margin_top = 60.0
+texture_margin_right = 60.0
+texture_margin_bottom = 60.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn"]
+content_margin_left = 20.0
+content_margin_top = 12.0
+content_margin_right = 20.0
+content_margin_bottom = 12.0
+texture = ExtResource("11_button")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_hover"]
+content_margin_left = 20.0
+content_margin_top = 12.0
+content_margin_right = 20.0
+content_margin_bottom = 12.0
+texture = ExtResource("11_button")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+modulate_color = Color(1.14, 1.1, 1.02, 1)
+
+[node name="TutorialLevel" type="Node3D" unique_id=1479155582]
+script = ExtResource("1_manager")
+skill_prompt = "第五步：走到前方墙体旁，再按 F 进入幽灵状态（可穿墙移动）"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2048735135]
+environment = SubResource("Environment_env")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=564787955]
+transform = Transform3D(1, 0, 0, 0, 0.5, -0.866025, 0, 0.866025, 0.5, 0, 12, 0)
+light_color = Color(1, 0.96, 0.88, 1)
+light_energy = 1.3
+shadow_enabled = true
+
+[node name="Ground" parent="." unique_id=1527994061 instance=ExtResource("12_terrain")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0)
+
+[node name="Player" parent="." unique_id=1404677289 instance=ExtResource("2_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+
+[node name="CameraRig" type="Node3D" parent="." unique_id=610229839]
+script = ExtResource("5_camera")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraRig" unique_id=1254429986]
+spring_length = 4.5
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig/SpringArm3D" unique_id=1215009578]
+current = true
+fov = 70.0
+
+[node name="HighlightArrow" type="Node3D" parent="." unique_id=88887090]
+visible = false
+
+[node name="Mesh" type="MeshInstance3D" parent="HighlightArrow" unique_id=1829922921]
+transform = Transform3D(1, 0, 0, 0, -1, 0, 0, 0, -1, 0, 0, 0)
+mesh = SubResource("PrismMesh_arrow")
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=144473131]
+
+[node name="InstructionLabel" type="Label" parent="UI" unique_id=1805669595]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -440.0
+offset_top = 56.0
+offset_right = 440.0
+offset_bottom = 210.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.96, 0.86, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.85)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 26
+text = "欢迎来到新手教程！"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="TutorialTriggers" type="Node3D" parent="." unique_id=1326013158]
+
+[node name="DummyTarget" type="StaticBody3D" parent="TutorialTriggers" unique_id=505145581]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8)
+collision_mask = 0
+script = ExtResource("7_dummy")
+
+[node name="Mesh" type="MeshInstance3D" parent="TutorialTriggers/DummyTarget" unique_id=475411318]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CapsuleMesh_dummy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TutorialTriggers/DummyTarget" unique_id=2064693747]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_dummy")
+
+[node name="SlowZone" type="Area3D" parent="TutorialTriggers" unique_id=890353229]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -15)
+collision_layer = 0
+collision_mask = 6
+script = ExtResource("6_slow")
+
+[node name="Web" parent="TutorialTriggers/SlowZone" unique_id=1496655365 instance=ExtResource("9_web")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TutorialTriggers/SlowZone" unique_id=1313194583]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("SphereShape3D_slow")
+
+[node name="GoalArea" type="Area3D" parent="TutorialTriggers" unique_id=1581423857]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -24)
+collision_layer = 0
+collision_mask = 6
+script = ExtResource("8_trigger")
+
+[node name="Mesh" type="MeshInstance3D" parent="TutorialTriggers/GoalArea" unique_id=972044136]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
+mesh = SubResource("CylinderMesh_goal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TutorialTriggers/GoalArea" unique_id=1215769796]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("SphereShape3D_goal")
+
+[node name="SkillWall" type="StaticBody3D" parent="TutorialTriggers" unique_id=171259987]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -30)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="TutorialTriggers/SkillWall" unique_id=664191445]
+mesh = SubResource("BoxMesh_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TutorialTriggers/SkillWall" unique_id=628480773]
+shape = SubResource("BoxShape3D_wall")
+
+[node name="WallTarget" parent="TutorialTriggers" unique_id=229616873 instance=ExtResource("14_survivor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, -36)
+
+[node name="HpLabel" type="Label3D" parent="TutorialTriggers/WallTarget" unique_id=1545051016]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.35, 0)
+billboard = 1
+no_depth_test = true
+text = "生命值 2/2"
+font = SubResource("SystemFont_ui")
+font_size = 64
+outline_size = 20
+
+[node name="Props" type="Node3D" parent="." unique_id=1605921157]
+
+[node name="Stone" parent="Props" unique_id=1217309079 instance=ExtResource("3_stone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.3, 2)
+
+[node name="Pumpkin" parent="Props" unique_id=1975314045 instance=ExtResource("4_pumpkin")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.3, 2)
+
+[node name="FinishPopup" type="CanvasLayer" parent="." unique_id=1717026383]
+layer = 10
+visible = false
+
+[node name="Shade" type="ColorRect" parent="FinishPopup" unique_id=1615580980]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.65)
+
+[node name="Center" type="CenterContainer" parent="FinishPopup" unique_id=343972679]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Window" type="Panel" parent="FinishPopup/Center" unique_id=512206099]
+custom_minimum_size = Vector2(700, 300)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_panel")
+
+[node name="Close" type="TextureButton" parent="FinishPopup/Center/Window" unique_id=5604339]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -75.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 75.0
+grow_horizontal = 0
+texture_normal = ExtResource("13_close")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="VBox" type="VBoxContainer" parent="FinishPopup/Center/Window" unique_id=1365345329]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 48.0
+offset_top = 40.0
+offset_right = -48.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 28
+alignment = 1
+
+[node name="Title" type="Label" parent="FinishPopup/Center/Window/VBox" unique_id=1800137650]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
+theme_override_colors/font_outline_color = Color(0.06, 0.045, 0.035, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 30
+text = "你已完成新手教程"
+horizontal_alignment = 1
+
+[node name="MenuButton" type="Button" parent="FinishPopup/Center/Window/VBox" unique_id=1000323904]
+custom_minimum_size = Vector2(220, 110)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 0.97, 0.9, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_hover")
+text = "返回主菜单"

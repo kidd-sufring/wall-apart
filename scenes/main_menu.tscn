@@ -1,0 +1,354 @@
+[gd_scene format=3 uid="uid://dvedyl5ituhtd"]
+
+[ext_resource type="Script" uid="uid://cwggjmdb8cxtq" path="res://scripts/main_menu.gd" id="1_menu"]
+[ext_resource type="Texture2D" uid="uid://c1gacwr3rb27p" path="res://ui/main_menu_bg.png" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://dsponwb3voltn" path="res://ui/button.png" id="3_btn"]
+[ext_resource type="Texture2D" uid="uid://bw1wbnxw8lcsx" path="res://ui/settings.png" id="4_settings"]
+[ext_resource type="Texture2D" uid="uid://c76h0uac5x5dq" path="res://ui/window.png" id="5_window"]
+[ext_resource type="Texture2D" uid="uid://bp6uqab776d7w" path="res://ui/close.png" id="6_close"]
+
+[sub_resource type="Gradient" id="Gradient_shade"]
+colors = PackedColorArray(0.015, 0.015, 0.02, 0.45, 0.015, 0.015, 0.02, 0.08)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_shade"]
+gradient = SubResource("Gradient_shade")
+width = 256
+height = 8
+fill_from = Vector2(0, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="SystemFont" id="SystemFont_title"]
+font_names = PackedStringArray("Microsoft YaHei", "SimHei", "Noto Sans CJK SC", "Arial")
+font_weight = 700
+subpixel_positioning = 0
+
+[sub_resource type="SystemFont" id="SystemFont_ui"]
+font_names = PackedStringArray("Microsoft YaHei", "SimHei", "Noto Sans CJK SC", "Arial")
+subpixel_positioning = 0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn"]
+content_margin_left = 20.0
+content_margin_top = 12.0
+content_margin_right = 20.0
+content_margin_bottom = 12.0
+texture = ExtResource("3_btn")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_pressed"]
+content_margin_left = 20.0
+content_margin_top = 12.0
+content_margin_right = 20.0
+content_margin_bottom = 12.0
+texture = ExtResource("3_btn")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+modulate_color = Color(0.8, 0.77, 0.72, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_hover"]
+content_margin_left = 20.0
+content_margin_top = 12.0
+content_margin_right = 20.0
+content_margin_bottom = 12.0
+texture = ExtResource("3_btn")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+modulate_color = Color(1.14, 1.1, 1.02, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_panel"]
+content_margin_left = 48.0
+content_margin_top = 40.0
+content_margin_right = 48.0
+content_margin_bottom = 40.0
+texture = ExtResource("5_window")
+texture_margin_left = 60.0
+texture_margin_top = 60.0
+texture_margin_right = 60.0
+texture_margin_bottom = 60.0
+
+[node name="MainMenu" type="Control" unique_id=511190036]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="Background" type="TextureRect" parent="." unique_id=286398046]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Shade" type="TextureRect" parent="." unique_id=2083644671]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_shade")
+expand_mode = 1
+
+[node name="Content" type="CenterContainer" parent="." unique_id=51570142]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Content" unique_id=126648232]
+layout_mode = 2
+theme_override_constants/separation = 44
+alignment = 1
+
+[node name="Title" type="Label" parent="Content/VBox" unique_id=1087298511]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
+theme_override_colors/font_outline_color = Color(0.06, 0.045, 0.035, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = SubResource("SystemFont_title")
+theme_override_font_sizes/font_size = 72
+text = "一墙之隔"
+horizontal_alignment = 1
+
+[node name="MenuButtons" type="VBoxContainer" parent="Content/VBox" unique_id=455912587]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="SingleButton" type="Button" parent="Content/VBox/MenuButtons" unique_id=2034413795]
+custom_minimum_size = Vector2(220, 110)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
+theme_override_colors/font_pressed_color = Color(0.85, 0.82, 0.76, 1)
+theme_override_colors/font_hover_color = Color(1, 0.97, 0.9, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_hover")
+text = "单人模式"
+
+[node name="LanButton" type="Button" parent="Content/VBox/MenuButtons" unique_id=985897184]
+custom_minimum_size = Vector2(220, 110)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
+theme_override_colors/font_pressed_color = Color(0.85, 0.82, 0.76, 1)
+theme_override_colors/font_hover_color = Color(1, 0.97, 0.9, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_hover")
+text = "局域网联机"
+
+[node name="TutorialButton" type="Button" parent="Content/VBox/MenuButtons" unique_id=2127581868]
+custom_minimum_size = Vector2(220, 110)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
+theme_override_colors/font_pressed_color = Color(0.85, 0.82, 0.76, 1)
+theme_override_colors/font_hover_color = Color(1, 0.97, 0.9, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_hover")
+text = "新手教程"
+
+[node name="Version" type="Label" parent="." unique_id=1796457914]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -140.0
+offset_top = -32.0
+offset_right = -24.0
+offset_bottom = -12.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.5, 0.48, 0.45, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 12
+text = "v0.1"
+horizontal_alignment = 2
+
+[node name="SettingsButton" type="TextureButton" parent="." unique_id=1689727347]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -134.0
+offset_top = -146.0
+offset_right = -34.0
+offset_bottom = -46.0
+grow_horizontal = 0
+grow_vertical = 0
+texture_normal = ExtResource("4_settings")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="SettingsPopup" type="Control" parent="." unique_id=1574004658]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Shade" type="ColorRect" parent="SettingsPopup" unique_id=864273503]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.7)
+
+[node name="Center" type="CenterContainer" parent="SettingsPopup" unique_id=1856652945]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Window" type="Panel" parent="SettingsPopup/Center" unique_id=580427387]
+custom_minimum_size = Vector2(660, 400)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_panel")
+
+[node name="Close" type="TextureButton" parent="SettingsPopup/Center/Window" unique_id=1799611706]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -75.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 75.0
+grow_horizontal = 0
+texture_normal = ExtResource("6_close")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="VBox" type="VBoxContainer" parent="SettingsPopup/Center/Window" unique_id=1322951197]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 48.0
+offset_top = 40.0
+offset_right = -48.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 26
+alignment = 1
+
+[node name="Title" type="Label" parent="SettingsPopup/Center/Window/VBox" unique_id=153816091]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
+theme_override_colors/font_outline_color = Color(0.06, 0.045, 0.035, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = SubResource("SystemFont_title")
+theme_override_font_sizes/font_size = 36
+text = "设置"
+horizontal_alignment = 1
+
+[node name="MusicRow" type="HBoxContainer" parent="SettingsPopup/Center/Window/VBox" unique_id=1907799358]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Label" type="Label" parent="SettingsPopup/Center/Window/VBox/MusicRow" unique_id=1472371303]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.87, 0.8, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 24
+text = "音乐"
+vertical_alignment = 1
+
+[node name="MusicSlider" type="HSlider" parent="SettingsPopup/Center/Window/VBox/MusicRow" unique_id=1493644773]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+value = 100.0
+
+[node name="MusicValue" type="Label" parent="SettingsPopup/Center/Window/VBox/MusicRow" unique_id=2132771217]
+custom_minimum_size = Vector2(72, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.87, 0.8, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 20
+text = "100%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SfxRow" type="HBoxContainer" parent="SettingsPopup/Center/Window/VBox" unique_id=218164789]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Label" type="Label" parent="SettingsPopup/Center/Window/VBox/SfxRow" unique_id=612596330]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.87, 0.8, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 24
+text = "音效"
+vertical_alignment = 1
+
+[node name="SfxSlider" type="HSlider" parent="SettingsPopup/Center/Window/VBox/SfxRow" unique_id=28782251]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+value = 100.0
+
+[node name="SfxValue" type="Label" parent="SettingsPopup/Center/Window/VBox/SfxRow" unique_id=1491157941]
+custom_minimum_size = Vector2(72, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.87, 0.8, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 20
+text = "100%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="CloseButton" type="Button" parent="SettingsPopup/Center/Window/VBox" unique_id=1459232922]
+custom_minimum_size = Vector2(220, 110)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
+theme_override_colors/font_pressed_color = Color(0.85, 0.82, 0.76, 1)
+theme_override_colors/font_hover_color = Color(1, 0.97, 0.9, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_hover")
+text = "完成"
+
+[connection signal="pressed" from="Content/VBox/MenuButtons/SingleButton" to="." method="_on_single_pressed"]
+[connection signal="pressed" from="Content/VBox/MenuButtons/LanButton" to="." method="_on_lan_pressed"]
+[connection signal="pressed" from="Content/VBox/MenuButtons/TutorialButton" to="." method="_on_tutorial_pressed"]

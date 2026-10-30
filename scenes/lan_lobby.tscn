@@ -1,0 +1,262 @@
+[gd_scene format=3 uid="uid://cyqf0bg3ho8yu"]
+
+[ext_resource type="Script" uid="uid://eracn8svob76" path="res://scripts/lan_lobby.gd" id="1_lobby"]
+[ext_resource type="Texture2D" uid="uid://c1gacwr3rb27p" path="res://ui/main_menu_bg.png" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://c76h0uac5x5dq" path="res://ui/window.png" id="3_window"]
+[ext_resource type="Texture2D" uid="uid://bp6uqab776d7w" path="res://ui/close.png" id="4_close"]
+[ext_resource type="Texture2D" uid="uid://dsponwb3voltn" path="res://ui/button.png" id="5_btn"]
+[ext_resource type="Texture2D" uid="uid://dqmwo2i51fyeg" path="res://ui/back.png" id="6_back"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_card"]
+texture = ExtResource("3_window")
+texture_margin_left = 56.0
+texture_margin_top = 56.0
+texture_margin_right = 56.0
+texture_margin_bottom = 56.0
+
+[sub_resource type="SystemFont" id="SystemFont_title"]
+font_names = PackedStringArray("Microsoft YaHei", "SimHei", "Noto Sans CJK SC", "Arial")
+font_weight = 700
+subpixel_positioning = 0
+
+[sub_resource type="SystemFont" id="SystemFont_ui"]
+font_names = PackedStringArray("Microsoft YaHei", "SimHei", "Noto Sans CJK SC", "Arial")
+subpixel_positioning = 0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn"]
+content_margin_left = 20.0
+content_margin_top = 12.0
+content_margin_right = 20.0
+content_margin_bottom = 12.0
+texture = ExtResource("5_btn")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_pressed"]
+content_margin_left = 20.0
+content_margin_top = 12.0
+content_margin_right = 20.0
+content_margin_bottom = 12.0
+texture = ExtResource("5_btn")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+modulate_color = Color(0.8, 0.77, 0.72, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_hover"]
+content_margin_left = 20.0
+content_margin_top = 12.0
+content_margin_right = 20.0
+content_margin_bottom = 12.0
+texture = ExtResource("5_btn")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+modulate_color = Color(1.14, 1.1, 1.02, 1)
+
+[node name="LanLobby" type="Control" unique_id=486487949]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lobby")
+
+[node name="Background" type="TextureRect" parent="." unique_id=409760352]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Shade" type="ColorRect" parent="." unique_id=1635541493]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.55)
+
+[node name="BackButton" type="Button" parent="." unique_id=151152788]
+custom_minimum_size = Vector2(220, 110)
+layout_mode = 0
+offset_left = 40.0
+offset_top = 36.0
+offset_right = 260.0
+offset_bottom = 146.0
+flat = true
+
+[node name="Icon" type="TextureRect" parent="BackButton" unique_id=1653949985]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 44.0
+offset_top = 10.0
+offset_right = -44.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_back")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Center" type="CenterContainer" parent="." unique_id=1610440180]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 150.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Card" type="Panel" parent="Center" unique_id=1354552864]
+custom_minimum_size = Vector2(880, 560)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_card")
+
+[node name="Close" type="TextureButton" parent="Center/Card" unique_id=1285653018]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -75.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 75.0
+grow_horizontal = 0
+texture_normal = ExtResource("4_close")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Content" type="MarginContainer" parent="Center/Card" unique_id=679133486]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 56.0
+offset_top = 48.0
+offset_right = -56.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Center/Card/Content" unique_id=787313106]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Title" type="Label" parent="Center/Card/Content/VBox" unique_id=1466157258]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
+theme_override_colors/font_outline_color = Color(0.06, 0.045, 0.035, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = SubResource("SystemFont_title")
+theme_override_font_sizes/font_size = 40
+text = "局域网联机"
+horizontal_alignment = 1
+
+[node name="NickRow" type="HBoxContainer" parent="Center/Card/Content/VBox" unique_id=99624959]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="NickLabel" type="Label" parent="Center/Card/Content/VBox/NickRow" unique_id=42326528]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.86, 0.78, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 20
+text = "昵称"
+vertical_alignment = 1
+
+[node name="NickInput" type="LineEdit" parent="Center/Card/Content/VBox/NickRow" unique_id=1448024919]
+custom_minimum_size = Vector2(340, 52)
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(12, 0)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 20
+placeholder_text = "输入昵称"
+
+[node name="IpRow" type="HBoxContainer" parent="Center/Card/Content/VBox" unique_id=564941453]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="IpLabel" type="Label" parent="Center/Card/Content/VBox/IpRow" unique_id=225180421]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.86, 0.78, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 20
+text = "主机 IP"
+vertical_alignment = 1
+
+[node name="IpInput" type="LineEdit" parent="Center/Card/Content/VBox/IpRow" unique_id=1961483861]
+custom_minimum_size = Vector2(340, 52)
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 20
+placeholder_text = "192.168.1.100"
+
+[node name="Buttons" type="HBoxContainer" parent="Center/Card/Content/VBox" unique_id=191116655]
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="HostButton" type="Button" parent="Center/Card/Content/VBox/Buttons" unique_id=1422511379]
+custom_minimum_size = Vector2(220, 110)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 0.97, 0.9, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_hover")
+text = "创建房间"
+
+[node name="JoinButton" type="Button" parent="Center/Card/Content/VBox/Buttons" unique_id=2072827096]
+custom_minimum_size = Vector2(220, 110)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 0.97, 0.9, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_hover")
+text = "加入房间"
+
+[node name="StatusLabel" type="Label" parent="Center/Card/Content/VBox" unique_id=763894009]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.82, 0.55, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 18
+text = "请输入昵称，然后创建房间或加入房间"
+horizontal_alignment = 1
+
+[node name="IpHint" type="Label" parent="Center/Card/Content/VBox" unique_id=1736877052]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.68, 0.6, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[connection signal="pressed" from="BackButton" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Center/Card/Close" to="." method="_on_close_pressed"]
+[connection signal="pressed" from="Center/Card/Content/VBox/Buttons/HostButton" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="Center/Card/Content/VBox/Buttons/JoinButton" to="." method="_on_join_pressed"]

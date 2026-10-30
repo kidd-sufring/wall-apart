@@ -1,0 +1,428 @@
+[gd_scene format=3 uid="uid://bkwgxl3bcdqwa"]
+
+[ext_resource type="Script" uid="uid://py5tql6s8r8x" path="res://scripts/character_select.gd" id="1_select"]
+[ext_resource type="Texture2D" uid="uid://c1gacwr3rb27p" path="res://ui/main_menu_bg.png" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://c76h0uac5x5dq" path="res://ui/window.png" id="3_window"]
+[ext_resource type="Texture2D" uid="uid://bp6uqab776d7w" path="res://ui/close.png" id="4_close"]
+[ext_resource type="Texture2D" uid="uid://dqmwo2i51fyeg" path="res://ui/back.png" id="5_back"]
+[ext_resource type="Texture2D" uid="uid://dsponwb3voltn" path="res://ui/button.png" id="6_btn"]
+[ext_resource type="Texture2D" uid="uid://bagc48lrnq5l7" path="res://ui/hunter_portrait.png" id="7_hunter"]
+[ext_resource type="Texture2D" uid="uid://dvkbtma0yq8ef" path="res://ui/survivor_portrait.png" id="8_survivor"]
+[ext_resource type="PackedScene" uid="uid://4eqm4cuq80px" path="res://scenes/skill_intro.tscn" id="9_intro"]
+
+[sub_resource type="SystemFont" id="SystemFont_title"]
+font_names = PackedStringArray("Microsoft YaHei", "SimHei", "Noto Sans CJK SC", "Arial")
+font_weight = 700
+subpixel_positioning = 0
+
+[sub_resource type="SystemFont" id="SystemFont_ui"]
+font_names = PackedStringArray("Microsoft YaHei", "SimHei", "Noto Sans CJK SC", "Arial")
+subpixel_positioning = 0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_card"]
+texture = ExtResource("3_window")
+texture_margin_left = 56.0
+texture_margin_top = 56.0
+texture_margin_right = 56.0
+texture_margin_bottom = 56.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn"]
+content_margin_left = 20.0
+content_margin_top = 10.0
+content_margin_right = 20.0
+content_margin_bottom = 10.0
+texture = ExtResource("6_btn")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_pressed"]
+content_margin_left = 20.0
+content_margin_top = 10.0
+content_margin_right = 20.0
+content_margin_bottom = 10.0
+texture = ExtResource("6_btn")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+modulate_color = Color(0.8, 0.77, 0.72, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_hover"]
+content_margin_left = 20.0
+content_margin_top = 10.0
+content_margin_right = 20.0
+content_margin_bottom = 10.0
+texture = ExtResource("6_btn")
+texture_margin_left = 32.0
+texture_margin_top = 32.0
+texture_margin_right = 32.0
+texture_margin_bottom = 32.0
+modulate_color = Color(1.14, 1.1, 1.02, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_status"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+bg_color = Color(0.02, 0.015, 0.03, 0.38)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="CharacterSelect" type="Control" unique_id=1529276654]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_select")
+
+[node name="Background" type="TextureRect" parent="." unique_id=582082831]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Shade" type="ColorRect" parent="." unique_id=323947016]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.55)
+
+[node name="Title" type="Label" parent="." unique_id=477056501]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 36.0
+offset_bottom = 98.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
+theme_override_colors/font_outline_color = Color(0.06, 0.045, 0.035, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = SubResource("SystemFont_title")
+theme_override_font_sizes/font_size = 44
+text = "选择角色"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Subtitle" type="Label" parent="." unique_id=1744171394]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 102.0
+offset_bottom = 130.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.72, 0.69, 0.64, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 18
+text = "你操控的一方将进入竞技场，另一方由 AI 托管"
+horizontal_alignment = 1
+
+[node name="BackButton" type="Button" parent="." unique_id=1491087663]
+custom_minimum_size = Vector2(220, 110)
+layout_mode = 0
+offset_left = 40.0
+offset_top = 36.0
+offset_right = 260.0
+offset_bottom = 146.0
+flat = true
+
+[node name="Icon" type="TextureRect" parent="BackButton" unique_id=331817204]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 44.0
+offset_top = 10.0
+offset_right = -44.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_back")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Cards" type="CenterContainer" parent="." unique_id=1992049821]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 132.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Card" type="Panel" parent="Cards" unique_id=236658498]
+custom_minimum_size = Vector2(1096, 560)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_card")
+
+[node name="Close" type="TextureButton" parent="Cards/Card" unique_id=555970682]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -75.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 75.0
+grow_horizontal = 0
+texture_normal = ExtResource("4_close")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Content" type="MarginContainer" parent="Cards/Card" unique_id=588593777]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = 20.0
+offset_right = -40.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Cards/Card/Content" unique_id=1047327979]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Row" type="HBoxContainer" parent="Cards/Card/Content/VBox" unique_id=971357385]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="HunterCol" type="VBoxContainer" parent="Cards/Card/Content/VBox/Row" unique_id=658429660]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Portrait" type="TextureRect" parent="Cards/Card/Content/VBox/Row/HunterCol" unique_id=1648740453]
+custom_minimum_size = Vector2(160, 160)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("7_hunter")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Role" type="Label" parent="Cards/Card/Content/VBox/Row/HunterCol" unique_id=27651291]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.66, 0.38, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 16
+text = "追捕者"
+horizontal_alignment = 1
+
+[node name="Divider" type="ColorRect" parent="Cards/Card/Content/VBox/Row/HunterCol" unique_id=158560311]
+custom_minimum_size = Vector2(240, 1)
+layout_mode = 2
+size_flags_horizontal = 4
+color = Color(0.45, 0.38, 0.28, 0.6)
+
+[node name="SkillLine" type="Label" parent="Cards/Card/Content/VBox/Row/HunterCol" unique_id=406637171]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.92, 0.86, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 18
+text = "胜利目标"
+horizontal_alignment = 1
+
+[node name="Desc" type="Label" parent="Cards/Card/Content/VBox/Row/HunterCol" unique_id=1907658540]
+custom_minimum_size = Vector2(300, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.72, 0.69, 0.64, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 18
+text = "在倒计时结束前击倒逃生者"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="SelectButton" type="Button" parent="Cards/Card/Content/VBox/Row/HunterCol" unique_id=853353332]
+custom_minimum_size = Vector2(220, 110)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 0.97, 0.9, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_hover")
+text = "选择"
+
+[node name="VDivider" type="ColorRect" parent="Cards/Card/Content/VBox/Row" unique_id=1228045077]
+custom_minimum_size = Vector2(1, 380)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.45, 0.38, 0.28, 0.45)
+
+[node name="SurvivorCol" type="VBoxContainer" parent="Cards/Card/Content/VBox/Row" unique_id=1004783411]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Portrait" type="TextureRect" parent="Cards/Card/Content/VBox/Row/SurvivorCol" unique_id=39391483]
+custom_minimum_size = Vector2(160, 160)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("8_survivor")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Role" type="Label" parent="Cards/Card/Content/VBox/Row/SurvivorCol" unique_id=1810634854]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.62, 0.76, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 16
+text = "逃生者"
+horizontal_alignment = 1
+
+[node name="Divider" type="ColorRect" parent="Cards/Card/Content/VBox/Row/SurvivorCol" unique_id=1926829896]
+custom_minimum_size = Vector2(240, 1)
+layout_mode = 2
+size_flags_horizontal = 4
+color = Color(0.45, 0.38, 0.28, 0.6)
+
+[node name="SkillLine" type="Label" parent="Cards/Card/Content/VBox/Row/SurvivorCol" unique_id=204152825]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.92, 0.86, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 18
+text = "胜利目标"
+horizontal_alignment = 1
+
+[node name="Desc" type="Label" parent="Cards/Card/Content/VBox/Row/SurvivorCol" unique_id=763075677]
+custom_minimum_size = Vector2(300, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.72, 0.69, 0.64, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 18
+text = "存活到倒计时结束"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="SelectButton" type="Button" parent="Cards/Card/Content/VBox/Row/SurvivorCol" unique_id=2087389320]
+custom_minimum_size = Vector2(220, 110)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 0.97, 0.9, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_hover")
+text = "选择"
+
+[node name="ActionRow" type="HBoxContainer" parent="Cards/Card/Content/VBox" unique_id=1763528500]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="CancelButton" type="Button" parent="Cards/Card/Content/VBox/ActionRow" unique_id=236225148]
+custom_minimum_size = Vector2(220, 110)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 0.97, 0.9, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_hover")
+text = "取消选择"
+
+[node name="StartButton" type="Button" parent="Cards/Card/Content/VBox/ActionRow" unique_id=1288985080]
+custom_minimum_size = Vector2(220, 110)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 0.97, 0.9, 1)
+theme_override_colors/font_disabled_color = Color(0.7, 0.68, 0.64, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_hover")
+text = "开始游戏"
+
+[node name="NetStatus" type="PanelContainer" parent="." unique_id=152963702]
+visible = false
+layout_mode = 0
+offset_left = 40.0
+offset_top = 156.0
+offset_right = 340.0
+offset_bottom = 260.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_status")
+
+[node name="VBox" type="VBoxContainer" parent="NetStatus" unique_id=274830286]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="SelfLabel" type="Label" parent="NetStatus/VBox" unique_id=384191989]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.85, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.06, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 18
+text = "未选择"
+autowrap_mode = 3
+
+[node name="OppoLabel" type="Label" parent="NetStatus/VBox" unique_id=1687712738]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.75, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.06, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 18
+text = "对手：等待加入…"
+autowrap_mode = 3
+
+[node name="PickLabel" type="Label" parent="NetStatus/VBox" unique_id=2001791335]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.82, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.06, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 18
+autowrap_mode = 3
+
+[node name="HintLabel" type="Label" parent="NetStatus/VBox" unique_id=1129778308]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.45, 0.42, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.06, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 18
+autowrap_mode = 3
+
+[node name="SkillIntro" parent="." unique_id=231654968 instance=ExtResource("9_intro")]
+
+[connection signal="pressed" from="BackButton" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Cards/Card/Close" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Cards/Card/Content/VBox/Row/HunterCol/SelectButton" to="." method="_on_hunter_pressed"]
+[connection signal="pressed" from="Cards/Card/Content/VBox/Row/SurvivorCol/SelectButton" to="." method="_on_survivor_pressed"]
+[connection signal="pressed" from="Cards/Card/Content/VBox/ActionRow/CancelButton" to="." method="_on_cancel_pressed"]
+[connection signal="pressed" from="Cards/Card/Content/VBox/ActionRow/StartButton" to="." method="_on_start_pressed"]
