@@ -4,21 +4,18 @@
 
 ## 下载与运行（Windows 玩家）
 
-打包好的可执行文件就在仓库的 **[`一墙之隔/`](https://github.com/kidd-sufring/wall-apart/tree/main/一墙之隔)** 目录下：
+打包好的 Windows 版发布在 **GitHub Releases**：[v1.0 首版试玩](https://github.com/kidd-sufring/wall-apart/releases/tag/v1.0)
 
-- `一墙之隔/一墙之隔.exe` —— 主程序，双击即可运行。
-- `一墙之隔/一墙之隔.pck` —— 游戏资源包，**必须和 exe 放在同一目录**，单独移动或删除会导致无法启动。
+| 下载附件 | 说明 |
+| --- | --- |
+| `wall-apart-v1.0-windows.zip` | **推荐**。解压后得到 `一墙之隔/` 目录，双击里面的 `一墙之隔.exe` 即可开始 |
+| `wall-apart-v1.0.exe` + `wall-apart-v1.0.pck` | 不想解压时下载这两个：**必须放在同一目录**再双击 exe（Godot 按同名的 `.pck` 加载资源） |
 
 运行要求：Windows 10 / 11 64 位，显卡支持 Direct3D 12（项目 Windows 端默认使用 D3D12 渲染后端）。
 
-这两个大文件用 Git LFS 存储：
+> GitHub 会把 Release 附件名里的非 ASCII 字符过滤掉，所以附件用英文名 `wall-apart-v1.0.*`；zip 包内仍是原来的中文 `一墙之隔.exe` / `一墙之隔.pck`，不影响运行。
 
-- **网页直接下载**：打开 `一墙之隔/一墙之隔.exe`（或 `.pck`）的文件页，点右上角 **Download**，拿到的就是完整文件。
-- **用 Git 拉取**：先装好 Git LFS（`git lfs install`），再
-  ```bash
-  git clone https://github.com/kidd-sufring/wall-apart.git
-  ```
-  之前已经克隆过的，进目录执行 `git lfs pull` 补下载。没有 LFS 时拉下来的只是几百字节的指针文件，双击 exe 会提示文件损坏或无法启动。
+仓库本身只放源码：编译好的二进制体积大、每次导出都会变，统一通过 Releases 发布，不再提交进 Git 历史。
 
 ## 1. 项目概述
 
@@ -208,10 +205,7 @@ wall-apart/
 ├── ui/                        # 界面贴图（血条、技能图标、头像、窗口、按钮）
 ├── materials/                 # 石砖材质
 ├── shaders/                   # cooldown_shade.gdshader（技能冷却圆形遮罩）
-├── addons/                    # godot_mcp 编辑器插件（开发辅助，不参与游戏逻辑）
-└── 一墙之隔/                  # 打包产物（Git LFS）
-    ├── 一墙之隔.exe
-    └── 一墙之隔.pck
+└── addons/                    # godot_mcp 编辑器插件（开发辅助，不参与游戏逻辑）
 ```
 
 ## 5. 运行与演示说明
@@ -232,6 +226,6 @@ wall-apart/
 
 ### 5.1 重新打包
 
-`export_presets.cfg` 中已带一个名为「Windows Desktop」的导出预设，导出到 `一墙之隔/一墙之隔.exe`，产物为 exe 加外置 `.pck`。打包完成后用 `git lfs` 提交这两个文件（`.gitattributes` 已把 `*.exe`、`*.pck` 交给 LFS 跟踪）。
+`export_presets.cfg` 中已带一个名为「Windows Desktop」的导出预设，导出到 `一墙之隔/一墙之隔.exe`，产物为 exe 加外置 `.pck`。发布时把 `一墙之隔/` 打成 zip，连同 exe / pck 一起作为 Release 附件上传（附件名用 ASCII，例如 `wall-apart-v1.0-windows.zip`）；不要把二进制提交进仓库——`.gitignore` 已忽略导出目录 `一墙之隔/`。
 
-- **试玩包下载**：仓库内 [`一墙之隔/一墙之隔.exe`](https://github.com/kidd-sufring/wall-apart/tree/main/一墙之隔)（网页点 Download，或 `git lfs pull` 后本地运行）。
+- **试玩包下载**：[Releases → v1.0](https://github.com/kidd-sufring/wall-apart/releases/tag/v1.0)

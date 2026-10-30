@@ -1,3 +1,6 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+# exported Windows build, published as GitHub Releases assets instead of git objects
+/一墙之隔/
