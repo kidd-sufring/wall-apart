@@ -197,7 +197,11 @@ func _consume(hunter_node: Node3D) -> void:
 			direction = Vector3.FORWARD
 		direction = direction.normalized()
 
-		if hunter_node.has_method("apply_knockback"):
+		if NetworkManager.is_online():
+			# 联机：本机的追捕者往往是远端代理，直接调用不会生效，
+			# 交由主机裁决免伤并让真正操控追捕者的一端执行击退
+			NetworkManager.report_shield_block(direction, knockback_distance, knockback_speed, knockback_max_duration)
+		elif hunter_node.has_method("apply_knockback"):
 			hunter_node.call("apply_knockback", direction, knockback_distance, knockback_speed, knockback_max_duration)
 
 		# 护盾弹开追捕者的音效

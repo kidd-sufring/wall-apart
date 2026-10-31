@@ -23,6 +23,7 @@ var game_result := -1
 
 var _signals_connected := false
 var _hit_cooldown := 0.0                # 主机端的受击冷却，与逃生者无敌时间一致
+var _shield_block_grace := 0.0          # 主机端：护盾挡下攻击后的免伤窗口
 
 signal lobby_changed                    # 玩家名单变化
 signal selection_changed                # 选角变化
@@ -39,6 +40,8 @@ signal item_event(net_id: String, kind: int, data: Dictionary)  # 投掷物状�
 func _process(delta: float) -> void:
 	if _hit_cooldown > 0.0:
 		_hit_cooldown = maxf(_hit_cooldown - delta, 0.0)
+	if _shield_block_grace > 0.0:
+		_shield_block_grace = maxf(_shield_block_grace - delta, 0.0)
 
 
 # ---------- 查询 ----------
@@ -150,6 +153,7 @@ func leave_room() -> void:
 	selections.clear()
 	game_result = -1
 	_hit_cooldown = 0.0
+	_shield_block_grace = 0.0
 
 
 func _connect_signals() -> void:
@@ -389,6 +393,9 @@ func _rpc_report_hit() -> void:
 
 
 func _apply_hit(amount: int) -> void:
+	# 逃生者刚用护盾挡下这次攻击：直接忽略，既不扣血也不进入受击冷却
+	if _shield_block_grace > 0.0:
+		return
 	if _hit_cooldown > 0.0:
 		return
 	if GameManager.state != GameManager.GameState.PLAYING:
@@ -401,6 +408,43 @@ func _apply_hit(amount: int) -> void:
 @rpc("authority", "call_local", "reliable")
 func _rpc_apply_hp(hp: int) -> void:
 	hp_received.emit(hp)
+
+
+# ---------- 护盾拦截同步（主机权威） ----------
+
+# 逃生者端：护盾消耗时上报，由主机统一判定免伤并让追捕者真正被击退。
+# 远端追捕者由 NetworkSync 插值驱动，本地直接调用 apply_knockback 不会生效。
+func report_shield_block(direction: Vector3, distance: float, speed: float, max_duration: float) -> void:
+	if not is_online():
+		return
+	if is_host():
+		_apply_shield_block(direction, distance, speed, max_duration)
+	else:
+		rpc_id(1, "_rpc_report_shield_block", direction, distance, speed, max_duration)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _rpc_report_shield_block(direction: Vector3, distance: float, speed: float, max_duration: float) -> void:
+	if not is_host():
+		return
+	if multiplayer.get_remote_sender_id() != get_role_owner(ROLE_SURVIVOR):
+		return
+	_apply_shield_block(direction, distance, speed, max_duration)
+
+
+func _apply_shield_block(direction: Vector3, distance: float, speed: float, max_duration: float) -> void:
+	# 挡下紧随其后的命中上报（网络延迟下护盾接触可能略早于伤害判定）
+	_shield_block_grace = 0.35
+	rpc("_rpc_shield_knockback", direction, distance, speed, max_duration)
+
+
+@rpc("authority", "call_local", "reliable")
+func _rpc_shield_knockback(direction: Vector3, distance: float, speed: float, max_duration: float) -> void:
+	# 只有本机操控的追捕者需要本地物理击退，远端追捕者靠 NetworkSync 位置同步
+	var hunter := get_tree().get_first_node_in_group("hunter") as CharacterBase
+	if hunter == null or hunter.remote_driven or not hunter.has_method("apply_knockback"):
+		return
+	hunter.call("apply_knockback", direction, distance, speed, max_duration)
 
 
 # ---------- 投掷物同步 ----------
