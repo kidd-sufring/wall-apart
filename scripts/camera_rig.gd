@@ -39,7 +39,7 @@ func _process(_delta: float) -> void:
 	spring_arm.rotation.x = pitch
 
 func _unhandled_input(event: InputEvent) -> void:
-	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+	if not Platform.is_captured():
 		return
 	if event is InputEventMouseMotion:
 		var motion := event as InputEventMouseMotion

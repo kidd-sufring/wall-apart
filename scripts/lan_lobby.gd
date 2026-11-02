@@ -14,20 +14,24 @@ extends Control
 @onready var join_button: Button = $Center/Card/Content/VBox/Buttons/JoinButton
 @onready var status_label: Label = $Center/Card/Content/VBox/StatusLabel
 @onready var ip_hint: Label = $Center/Card/Content/VBox/IpHint
+@onready var copy_button: Button = $Center/Card/Content/VBox/CopyButton
 
 var _button_tweens: Dictionary = {}
 var _lobby_busy := false
+var _host_ip := ""                       # 建房后本机可被连接的 IP，复制按钮使用
 
 
 func _ready() -> void:
 	GameManager.enter_menu_state()
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	Platform.set_capture(false)
 
 	NetworkManager.status_changed.connect(_on_net_status)
 	NetworkManager.enter_select.connect(_on_net_enter_select)
 	nick_input.text_changed.connect(_on_nick_changed)
+	copy_button.visible = false
+	copy_button.pressed.connect(_on_copy_pressed)
 
-	for button in [back_button, close_button, host_button, join_button] as Array[Control]:
+	for button in [back_button, close_button, host_button, join_button, copy_button] as Array[Control]:
 		button.mouse_entered.connect(_on_button_hover.bind(true, button))
 		button.mouse_exited.connect(_on_button_hover.bind(false, button))
 
@@ -49,6 +53,8 @@ func _on_back_pressed() -> void:
 		_set_lobby_busy(false)
 		status_label.text = "请输入昵称，然后创建房间或加入房间"
 		ip_hint.text = ""
+		_host_ip = ""
+		copy_button.visible = false
 		return
 	# 还没进房间：返回主菜单
 	SceneTransition.change_scene("res://scenes/main_menu.tscn")
@@ -70,7 +76,21 @@ func _on_host_pressed() -> void:
 	if not NetworkManager.host_game(nick_input.text):
 		return
 	_set_lobby_busy(true)
-	ip_hint.text = "本机 IP：%s（端口 %d），请告知对方" % [NetworkManager.get_lan_ip(), NetworkManager.PORT]
+	_host_ip = NetworkManager.get_lan_ip()
+	ip_hint.text = "本机 IP：%s（端口 %d），点击下方按钮可复制" % [_host_ip, NetworkManager.PORT]
+	copy_button.visible = true
+
+
+# 把主机 IP 写入系统剪贴板，方便直接粘贴给队友
+func _on_copy_pressed() -> void:
+	if _host_ip.is_empty():
+		return
+	DisplayServer.clipboard_set(_host_ip)
+	# 部分平台会静默失败，写完后校验一次，避免给出错误的“已复制”反馈
+	if DisplayServer.clipboard_get() == _host_ip:
+		status_label.text = "已复制 IP：%s" % _host_ip
+	else:
+		status_label.text = "复制失败，请手动记录 IP：%s" % _host_ip
 
 
 func _on_join_pressed() -> void:

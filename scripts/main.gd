@@ -27,11 +27,15 @@ func _ready() -> void:
 
 	_set_characters_active(false)  # 准备倒计时期间冻结移动与技能
 	GameManager.sync_survivor_hp(survivor.health, survivor.max_health)
-	GameManager.begin_countdown()
+	if NetworkManager.is_online():
+		# 联机：等双方场景都加载完，由主机统一下发倒计时，避免各自计时不同步
+		NetworkManager.report_scene_ready()
+	else:
+		GameManager.begin_countdown()
 	# countdown 期间预热南瓜粘液滩特效，避免第一个南瓜落地时现编译着色器卡顿
 	ThrowableItem.prewarm_slime_puddle(self)
 
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	Platform.set_capture(true)
 
 	# 进入对局停掉菜单背景音乐，并给 HUD 上的按钮挂上界面音效
 	AudioManager.stop_bgm(0.3)
@@ -116,7 +120,7 @@ func _on_net_result(result: int) -> void:
 func _on_state_changed(new_state: int) -> void:
 	if new_state == GameManager.GameState.PLAYING:
 		_set_characters_active(true)
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		Platform.set_capture(true)
 	elif new_state == GameManager.GameState.RESULT:
 		_set_characters_active(false)
 		# 联机：主机把最终结果同步给客户端
@@ -139,6 +143,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	# Esc 释放鼠标，点击窗口重新锁定
 	if event.is_action_pressed("ui_cancel"):
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		Platform.set_capture(false)
 	elif event is InputEventMouseButton and event.pressed:
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		Platform.set_capture(true)

@@ -151,6 +151,16 @@ func _set_ghost(active: bool) -> void:
 	for mesh in _ghost_meshes:
 		mesh.transparency = transparency
 
+# 联机：本机是否处于受伤无敌虚化（供 NetworkSync 同步给对手视角）
+func is_hit_invincible() -> bool:
+	return _ghost_active
+
+# 联机：应用对手同步过来的无敌虚化状态。
+# 远端角色不跑本地 _update_status，无敌计时永远不会结束，
+# 所以远端外观只能由拥有者的状态驱动，不能自己启动计时
+func set_remote_invincible(active: bool) -> void:
+	_set_ghost(active)
+
 # 倒地时清掉残留的受击无敌：倒地期间应该能被追捕者再次命中
 func _on_stun_started() -> void:
 	_invincible_time_left = 0.0
@@ -199,6 +209,10 @@ func apply_network_hp(value: int) -> void:
 	flash_hit()
 	_play_hit_sound()
 	health_changed.emit(health, max_health)
+	# 远端角色只播放受击表现，无敌虚化由 NetworkSync 的标志驱动：
+	# 远端不会执行 _update_status，若在这里启动本机计时，虚化会一直卡住
+	if remote_driven:
+		return
 	if is_stunned:
 		_invincible_time_left = invincible_duration
 		_hit_reaction_pending = true
@@ -229,7 +243,8 @@ func is_shield_active() -> bool:
 # 当前响应触发几率：破绽（0）> 高度警觉（70%）> 常规（30%）
 # 只有 AI 托管且已激活的逃生者会规避；玩家操控时不自动位移
 func get_evasion_trigger_chance() -> float:
-	if player_controlled or not active:
+	# 远端角色只是网络插值出来的副本，不能在本机做规避位移
+	if player_controlled or remote_driven or not active:
 		return 0.0
 	# 空中（跳跃/下落）不参与躲避判定
 	if not is_on_floor():

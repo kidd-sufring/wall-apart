@@ -18,7 +18,7 @@ var _buttons: Array[Button] = []
 
 func _ready() -> void:
 	GameManager.enter_menu_state()
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	Platform.set_capture(false)
 
 	_buttons = [easy_button, normal_button, hard_button]
 	for button in [easy_button, normal_button, hard_button, back_button] as Array[Button]:

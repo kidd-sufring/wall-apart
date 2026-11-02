@@ -210,7 +210,7 @@ custom_minimum_size = Vector2(340, 52)
 layout_mode = 2
 theme_override_fonts/font = SubResource("SystemFont_ui")
 theme_override_font_sizes/font_size = 20
-placeholder_text = "192.168.1.100"
+placeholder_text = "主机玩家不用输入"
 
 [node name="Buttons" type="HBoxContainer" parent="Center/Card/Content/VBox" unique_id=191116655]
 layout_mode = 2
@@ -255,6 +255,21 @@ theme_override_colors/font_color = Color(0.72, 0.68, 0.6, 1)
 theme_override_fonts/font = SubResource("SystemFont_ui")
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
+
+[node name="CopyButton" type="Button" parent="Center/Card/Content/VBox" unique_id=1993657406]
+visible = false
+custom_minimum_size = Vector2(220, 110)
+layout_mode = 2
+size_flags_horizontal = 4
+offset_transform_enabled = true
+theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
+theme_override_colors/font_hover_color = Color(1, 0.97, 0.9, 1)
+theme_override_fonts/font = SubResource("SystemFont_ui")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn_hover")
+text = "复制 IP"
 
 [connection signal="pressed" from="BackButton" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="Center/Card/Close" to="." method="_on_close_pressed"]

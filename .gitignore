@@ -1,6 +1,7 @@
-# Godot 4+ specific ignores
+# Godot 导入缓存
 .godot/
-/android/
-
-# exported Windows build, published as GitHub Releases assets instead of git objects
-/一墙之隔/
+# 导出产物
+build/
+# 临时文件
+*.tmp
+*.log

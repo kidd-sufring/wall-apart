@@ -161,7 +161,7 @@ stretch_mode = 5
 layout_mode = 2
 theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
 theme_override_fonts/font = SubResource("SystemFont_title")
-theme_override_font_sizes/font_size = 34
+theme_override_font_sizes/font_size = 44
 text = "幽灵状态"
 horizontal_alignment = 1
 
@@ -184,7 +184,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.88, 0.62, 1)
 theme_override_fonts/font = SubResource("SystemFont_title")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 26
 text = "F"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -193,7 +193,7 @@ vertical_alignment = 1
 layout_mode = 2
 theme_override_colors/font_color = Color(0.72, 0.69, 0.64, 1)
 theme_override_fonts/font = SubResource("SystemFont_ui")
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 22
 text = "按键释放"
 vertical_alignment = 1
 
@@ -206,14 +206,14 @@ theme_override_constants/separation = 10
 layout_mode = 2
 theme_override_colors/font_color = Color(0.85, 0.7, 0.42, 1)
 theme_override_fonts/font = SubResource("SystemFont_ui")
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 24
 text = "主动 · 位移"
 
 [node name="Cooldown" type="Label" parent="Root/Center/Window/Content/Row/Right" unique_id=2005110126]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.75, 0.72, 0.66, 1)
 theme_override_fonts/font = SubResource("SystemFont_ui")
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 24
 text = "冷却 10 秒"
 
 [node name="Divider" type="ColorRect" parent="Root/Center/Window/Content/Row/Right" unique_id=706424952]
@@ -225,7 +225,7 @@ color = Color(0.45, 0.38, 0.28, 0.6)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.92, 0.86, 1)
 theme_override_fonts/font = SubResource("SystemFont_title")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 26
 text = "技能效果"
 
 [node name="Effects" type="VBoxContainer" parent="Root/Center/Window/Content/Row/Right" unique_id=1295629249]
@@ -236,40 +236,9 @@ theme_override_constants/separation = 8
 layout_mode = 2
 theme_override_colors/font_color = Color(0.86, 0.83, 0.78, 1)
 theme_override_fonts/font = SubResource("SystemFont_ui")
-theme_override_font_sizes/font_size = 18
-text = "◆ 按 F 进入幽灵状态，模型替换为幽灵形态"
-autowrap_mode = 3
-
-[node name="Effect2" type="Label" parent="Root/Center/Window/Content/Row/Right/Effects" unique_id=17226495]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.86, 0.83, 0.78, 1)
-theme_override_fonts/font = SubResource("SystemFont_ui")
-theme_override_font_sizes/font_size = 18
-text = "◆ 期间无视不可翻越墙体，可穿墙移动"
-autowrap_mode = 3
-
-[node name="Effect3" type="Label" parent="Root/Center/Window/Content/Row/Right/Effects" unique_id=51581092]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.86, 0.83, 0.78, 1)
-theme_override_fonts/font = SubResource("SystemFont_ui")
-theme_override_font_sizes/font_size = 18
-text = "◆ 穿过墙体并离开一小段距离后自动结束"
-autowrap_mode = 3
-
-[node name="Effect4" type="Label" parent="Root/Center/Window/Content/Row/Right/Effects" unique_id=466327653]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.86, 0.83, 0.78, 1)
-theme_override_fonts/font = SubResource("SystemFont_ui")
-theme_override_font_sizes/font_size = 18
-text = "◆ 未穿墙时 5 秒后自动结束"
-autowrap_mode = 3
-
-[node name="Tip" type="Label" parent="Root/Center/Window/Content/Row/Right" unique_id=812946644]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.75, 0.55, 1)
-theme_override_fonts/font = SubResource("SystemFont_ui")
-theme_override_font_sizes/font_size = 18
-text = "使用时机：被绕墙拉开距离时，穿墙截断逃跑路线。"
+theme_override_font_sizes/font_size = 26
+text = "进入持续3s的幽灵状态，
+可以穿越墙体和躲避道具"
 autowrap_mode = 3
 
 [node name="Spacer" type="Control" parent="Root/Center/Window/Content/Row/Right" unique_id=999956307]
@@ -283,7 +252,7 @@ size_flags_horizontal = 8
 theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
 theme_override_colors/font_hover_color = Color(1, 0.97, 0.9, 1)
 theme_override_fonts/font = SubResource("SystemFont_ui")
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_btn")
 theme_override_styles/hover = SubResource("StyleBoxTexture_btn")

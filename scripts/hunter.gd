@@ -20,6 +20,7 @@ extends CharacterBase
 var is_evading := false                # 正在执行战术规避：期间完全跳过常规移动
 var is_alerted := false                # 高度警觉：被投掷物真实命中过
 var is_exposed := false                # 战术破绽：刚成功规避过，下次触发几率归零
+var net_ghost_active := false          # 联机：远端同步的幽灵状态（用于投掷物免疫判定）
 
 var _knockback_active := false
 var _knockback_dir := Vector3.ZERO
@@ -98,7 +99,13 @@ func _on_stun_started() -> void:
 
 # 幽灵状态免疫投掷物：飞行中的投掷物会直接穿过身体（由 ThrowableItem 每帧同步碰撞例外）
 func is_projectile_immune() -> bool:
-	return ghost_skill != null and ghost_skill.is_ghost_active()
+	return net_ghost_active or (ghost_skill != null and ghost_skill.is_ghost_active())
+
+
+# 联机：接收对端同步过来的幽灵状态标记。远端角色不会运行本地技能状态机，
+# 但命中判定仍然需要知道它当前是否处于免疫状态
+func set_remote_ghost_active(active: bool) -> void:
+	net_ghost_active = active
 
 
 # AI 托管时目标倒地：主动贴到攻击距离内再把人打掉。
@@ -186,7 +193,9 @@ func is_knocked_back() -> bool:
 # 当前响应触发几率：破绽（0）> 高度警觉（70%）> 常规（30%）
 # 只有 AI 托管且已激活的追捕者会规避；玩家操控时不自动位移（与逃生者一致）
 func get_evasion_trigger_chance() -> float:
-	if player_controlled or not active:
+	# 远端角色只是网络插值出来的副本，不能在本机做规避位移，
+	# 否则会把投掷物的真实命中判定“虚晃”掉
+	if player_controlled or remote_driven or not active:
 		return 0.0
 	# 空中（跳跃/下落）不参与躲避判定
 	if not is_on_floor():

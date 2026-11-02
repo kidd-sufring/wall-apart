@@ -25,6 +25,8 @@ var match_time_left := 0.0                  # 结算时保留的比赛剩余时�
 var survivor_hp := SURVIVOR_MAX_HP
 var survivor_max_hp := SURVIVOR_MAX_HP
 var match_result: int = -1
+# 联机客户端标记：本地只显示主机下发的时钟，不能自行推进阶段，避免开局不同步
+var online_clock_client := false
 
 # 倒计时已播放到的整秒数，用于 3 / 2 / 1 各响一次提示音
 var _countdown_tick := -1
@@ -37,6 +39,8 @@ signal survivor_hp_changed(current: int, maximum: int)
 
 
 func _process(delta: float) -> void:
+	# 联机时只有主机拥有计时权，客户端等待主机下发阶段切换，避免倒计时还没结束就能移动
+	var authority := not NetworkManager.is_online() or NetworkManager.is_host()
 	match state:
 		GameState.COUNTDOWN:
 			# 场景切换的淡出期间状态已是 COUNTDOWN，但倒计时要在游戏场景就绪后才真正开始，
@@ -46,14 +50,18 @@ func _process(delta: float) -> void:
 			time_left = maxf(time_left - delta, 0.0)
 			_play_countdown_tick()
 			if time_left <= 0.0:
-				# 倒计时结束：吹哨，正式开赛
-				_countdown_started = false
-				AudioManager.play_2d(&"whistle", -2.0)
-				_set_state(GameState.PLAYING)
-				time_left = match_duration
+				if authority:
+					# 倒计时结束：吹哨，正式开赛
+					_countdown_started = false
+					AudioManager.play_2d(&"whistle", -2.0)
+					_set_state(GameState.PLAYING)
+					time_left = match_duration
+				else:
+					# 客户端计时到 0 后保持冻结，等主机同步 PLAYING
+					time_left = 0.0
 		GameState.PLAYING:
 			time_left = maxf(time_left - delta, 0.0)
-			if time_left <= 0.0:
+			if time_left <= 0.0 and authority:
 				# 时间耗尽且逃生者仍存活 → 逃生者胜利
 				end_match(MatchResult.SURVIVOR_WIN)
 
@@ -164,6 +172,17 @@ func begin_countdown() -> void:
 	_countdown_tick = -1
 	_countdown_started = true
 	_set_state(GameState.COUNTDOWN)
+
+
+# 联机客户端应用主机下发的阶段与剩余时间
+func apply_online_clock(synced_state: int, synced_time_left: float) -> void:
+	if not online_clock_client:
+		return
+	time_left = maxf(synced_time_left, 0.0)
+	if synced_state != state:
+		if synced_state == GameState.COUNTDOWN:
+			_countdown_started = true
+		_set_state(synced_state)
 
 
 # 逃生者血量同步（生命值唯一数据源）

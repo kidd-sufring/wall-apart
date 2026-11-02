@@ -66,7 +66,7 @@ func _rpc_state(pos: Vector3, yaw: float, run: bool, anim: StringName, anim_spee
 		_apply_flags(flags)
 
 
-# bit0 = 护盾可视化显示中；bit1 = 追捕者处于幽灵状态
+# bit0 = 护盾可视化显示中；bit1 = 追捕者处于幽灵状态；bit2 = 逃生者受伤无敌虚化
 func _collect_flags() -> int:
 	var flags := 0
 	var shield := _body.get_node_or_null("ShieldVisual") as Node3D
@@ -75,15 +75,26 @@ func _collect_flags() -> int:
 	var ghost := _body.get_node_or_null("GhostSkill")
 	if ghost != null and ghost.has_method("is_ghost_active") and bool(ghost.call("is_ghost_active")):
 		flags |= 2
+	# 无敌虚化是逃生者自己的本地状态，远端必须按标志显示，否则会一直卡在虚化
+	if _body.has_method("is_hit_invincible") and bool(_body.call("is_hit_invincible")):
+		flags |= 4
 	return flags
 
 
 func _apply_flags(flags: int) -> void:
 	_remote_flags = flags
+	# 幽灵状态不只是外观：远端追捕者不运行本地技能状态机，
+	# 必须把“当前是否免疫投掷物”同步过去，命中判定才认这套状态
+	if _body.has_method("set_remote_ghost_active"):
+		_body.call("set_remote_ghost_active", (flags & 2) != 0)
 
 	var shield := _body.get_node_or_null("ShieldVisual") as Node3D
 	if shield != null:
 		shield.visible = (flags & 1) != 0
+
+	# 逃生者受伤无敌虚化：远端不做本地计时，只跟随拥有者的标志
+	if _body.has_method("set_remote_invincible"):
+		_body.call("set_remote_invincible", (flags & 4) != 0)
 
 	var ghost := _body.get_node_or_null("GhostSkill")
 	if ghost == null:

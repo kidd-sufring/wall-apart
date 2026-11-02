@@ -17,13 +17,13 @@ config/icon="res://icon.png"
 
 [autoload]
 
+Platform="*res://scripts/platform.gd"
 EventBus="*res://scripts/event_bus.gd"
 GameManager="*res://scripts/game_manager.gd"
 NetworkManager="*res://scripts/network_manager.gd"
-LanManager="*res://scripts/network/LanManager.gd"
 SceneTransition="*res://scripts/scene_transition.gd"
-MCPRuntimeProbe="*uid://bsg12huaf1u5i"
 AudioManager="*res://scripts/audio_manager.gd"
+MCPRuntimeProbe="*uid://bsg12huaf1u5i"
 
 [display]
 
@@ -99,3 +99,4 @@ throw={
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+renderer/rendering_method.mobile="gl_compatibility"

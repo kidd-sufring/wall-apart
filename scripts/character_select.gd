@@ -32,7 +32,7 @@ var _hint_serial := 0
 
 func _ready() -> void:
 	GameManager.enter_character_select_state()
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	Platform.set_capture(false)
 
 	for button in [back_button, card_close, hunter_select, survivor_select,
 			cancel_button, start_button] as Array[Control]:
@@ -202,6 +202,11 @@ func _apply_role_lock(role: StringName, button: Button, card: Control) -> void:
 		# 变灰 + 禁用按钮
 		card.modulate = Color(0.55, 0.55, 0.6, 1.0)
 		button.disabled = true
+		# 区分是“自己已选”还是“被对方选走”，避免两个灰置按钮含义不清
+		if int(NetworkManager.selections[role]) == NetworkManager.get_my_id():
+			button.text = "你已选择该角色"
+		else:
+			button.text = "已被对方选择"
 		# 彻底关掉鼠标交互，避免 hover 放大
 		button.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		var tween: Tween = _button_tweens.get(button)
@@ -213,6 +218,7 @@ func _apply_role_lock(role: StringName, button: Button, card: Control) -> void:
 		card.modulate = Color(1, 1, 1, 1)
 		button.disabled = false
 		button.mouse_filter = Control.MOUSE_FILTER_STOP
+		button.text = "选择"
 		_locked_buttons.erase(button)
 
 

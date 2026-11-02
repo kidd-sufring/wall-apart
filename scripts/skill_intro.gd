@@ -3,20 +3,8 @@ extends CanvasLayer
 # 技能介绍界面：全屏覆盖在角色选择之上，按角色切换插画与文案。
 # 关闭 / 返回回到角色选择；「选择此角色」直接开局。
 
-const HUNTER_EFFECTS := [
-	"按 F 进入幽灵状态，模型替换为幽灵形态",
-	"期间无视不可翻越墙体，可穿墙移动",
-	"投掷物会直接穿过身体，无法命中",
-	"未穿墙时 3 秒后自动结束",
-]
-const SURVIVOR_EFFECTS := [
-	"按 F 获得 0.5 秒一次性泡泡护盾",
-	"护盾期间免疫一次追捕者伤害",
-	"触发时把追捕者沿水平方向击退 10 米",
-	"未触发则护盾自然消失",
-]
-const HUNTER_TIP := "使用时机：被绕墙拉开距离时，穿墙截断逃跑路线。"
-const SURVIVOR_TIP := "使用时机：被贴身时开盾，用击退拉开距离。"
+const HUNTER_EFFECT := "进入持续3s的幽灵状态，\n可以穿越墙体和躲避道具"
+const SURVIVOR_EFFECT := "获得持续0.5s的护盾，\n可以击退近身的追捕者10m"
 
 # 点击「选择此角色」：由宿主界面决定是开局还是向主机申请锁定角色
 signal pick_confirmed(role: StringName)
@@ -32,13 +20,7 @@ var _survivor_art: Texture2D = preload("res://ui/skill_survivor.png")
 @onready var skill_name: Label = $Root/Center/Window/Content/Row/Left/SkillName
 @onready var tag_label: Label = $Root/Center/Window/Content/Row/Right/Tag
 @onready var cooldown_label: Label = $Root/Center/Window/Content/Row/Right/Cooldown
-@onready var effect_labels: Array[Label] = [
-	$Root/Center/Window/Content/Row/Right/Effects/Effect1,
-	$Root/Center/Window/Content/Row/Right/Effects/Effect2,
-	$Root/Center/Window/Content/Row/Right/Effects/Effect3,
-	$Root/Center/Window/Content/Row/Right/Effects/Effect4,
-]
-@onready var tip_label: Label = $Root/Center/Window/Content/Row/Right/Tip
+@onready var effect_label: Label = $Root/Center/Window/Content/Row/Right/Effects/Effect1
 @onready var back_button: Button = $Root/BackButton
 @onready var close_button: TextureButton = $Root/Center/Window/Close
 @onready var pick_button: Button = $Root/Center/Window/Content/Row/Right/PickButton
@@ -68,13 +50,9 @@ func open(role: StringName) -> void:
 	tag_label.text = "主动 · 位移" if is_hunter else "主动 · 防御"
 	cooldown_label.text = "冷却 10 秒" if is_hunter else "冷却 8 秒"
 
-	var lines: Array = HUNTER_EFFECTS if is_hunter else SURVIVOR_EFFECTS
-	for i in effect_labels.size():
-		effect_labels[i].text = "◆ " + str(lines[i])
+	effect_label.text = HUNTER_EFFECT if is_hunter else SURVIVOR_EFFECT
 
-	tip_label.text = HUNTER_TIP if is_hunter else SURVIVOR_TIP
-
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	Platform.set_capture(false)
 	# 面板翻开的声音
 	AudioManager.play_2d(&"page", -6.0, randf_range(0.98, 1.02))
 

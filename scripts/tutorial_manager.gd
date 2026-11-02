@@ -97,7 +97,7 @@ func _ready() -> void:
 	EventBus.slow_zone_avoided.connect(_on_bus_slow_zone_avoided)
 	EventBus.skill_used.connect(_on_bus_skill_used)
 
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	Platform.set_capture(true)
 
 	# 进入教程停掉菜单背景音乐，并给教程界面的按钮挂上界面音效
 	AudioManager.stop_bgm(0.3)
@@ -127,8 +127,8 @@ func _process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not event.is_action_pressed("ui_cancel"):
 		return
-	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	if Platform.is_captured():
+		Platform.set_capture(false)
 		_set_instruction("已释放鼠标（再次按 Esc 返回主菜单）")
 		return
 	GameManager.return_to_menu()
@@ -368,7 +368,7 @@ func _present_finish_popup() -> void:
 	if _finish_popup == null or not is_instance_valid(_finish_popup):
 		return
 	_finish_popup.visible = true
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	Platform.set_capture(false)
 	var button := _finish_popup.get_node_or_null("Center/Window/VBox/MenuButton") as Button
 	if button != null and not button.pressed.is_connected(_on_finish_menu_pressed):
 		button.pressed.connect(_on_finish_menu_pressed)

@@ -39,6 +39,7 @@ var net_id := ""                                # 投掷物在双方场景里的
 var _net_proxy := false                         # true = 本端只是对方投掷物的显示副本，不做命中结算
 var _net_holder_role: StringName = &""          # 联机时当前持有它的角色 ID
 var _net_proxy_hit_done := false                # 副本是否已在本端为“砸中本地玩家”补过结算
+var _net_destroy_applied := false               # 本端是否已执行过销毁，避免双方同时上报导致重复爆炸
 
 var _collected := false
 var _pickup_cooldown := 0.0                     # 刚被扔出时的拾取冷却，避免立刻吸回手里
@@ -463,6 +464,9 @@ func _on_body_entered(body: Node3D) -> void:
 func _handle_character_hit(body: CharacterBase) -> void:
 	if _hit_handled or _collected or not _flying:
 		return
+	# 幽灵状态免疫投掷物：接触信号或扫掠判定抢先到达时也不能算命中
+	if body.has_method("is_projectile_immune") and bool(body.call("is_projectile_immune")):
+		return
 	# 倒地中的角色保留碰撞层（追捕者可以继续攻击），但投掷物不再重复结算
 	if body.get("is_stunned") == true:
 		return
@@ -503,6 +507,9 @@ func _check_net_character_hit() -> void:
 		var character := node as CharacterBase
 		if character == null or character == _thrower or not character.active:
 			continue
+		# 远端追捕者可能正处于幽灵状态，扫掠判定同样要跳过免疫目标
+		if character.has_method("is_projectile_immune") and bool(character.call("is_projectile_immune")):
+			continue
 		var base := character.global_position
 		var center := base + Vector3.UP * 0.9
 		var closest := Geometry3D.get_closest_point_to_segment(center, from, to)
@@ -520,19 +527,33 @@ func _on_proxy_body_entered(body: Node3D) -> void:
 	var character := body as CharacterBase
 	if not character.player_controlled:
 		return
+	if character.has_method("is_projectile_immune") and bool(character.call("is_projectile_immune")):
+		return
 	_net_proxy_hit_done = true
+	_net_destroy_applied = true
+	_hit_handled = true
+	_flying = false
 	if item_type == ItemType.PUMPKIN:
 		character.apply_slow()
+		_play_explosion_sound()
+		_spawn_slime_puddle()
 	else:
 		character.apply_stun()
-	# 通知投掷方：让对面那只远端角色也补上减速/击倒表现
+	# 命中端把「命中 + 销毁」一起补发给投掷方：投掷端可能因远端插值漏判，
+	# 南瓜必须在碰到对方的这一瞬间就在两端同时爆炸消失
 	var role := _net_role_of(character)
 	if role != &"":
 		NetworkManager.send_item_event(net_id, NetworkManager.ItemEvent.HIT,
 			{"role": String(role), "kind": int(item_type)})
+	NetworkManager.send_item_event(net_id, NetworkManager.ItemEvent.DESTROY,
+		{"pos": global_position, "puddle": item_type == ItemType.PUMPKIN})
+	queue_free()
 
 # 销毁并通知对手（南瓜爆炸时顺带让对方也生成粘液滩）
 func _net_destroy(explodes: bool) -> void:
+	if _net_destroy_applied:
+		return
+	_net_destroy_applied = true
 	if NetworkManager.is_online() and not _net_proxy:
 		NetworkManager.send_item_event(net_id, NetworkManager.ItemEvent.DESTROY,
 			{"pos": global_position, "puddle": explodes})
@@ -602,6 +623,7 @@ func _net_apply_throw(data: Dictionary) -> void:
 	_collected = false
 	_hit_handled = true          # 副本只做显示，命中结算由投掷方负责
 	_net_proxy_hit_done = false  # 但砸到本机玩家时要由本端补一次结算
+	_net_destroy_applied = false
 	_flying = true
 	has_attempted_dodge = true
 	_flight_time = 0.0
@@ -635,6 +657,7 @@ func _net_apply_rest(data: Dictionary) -> void:
 	_flying = false
 	_hit_handled = true
 	_net_proxy_hit_done = false
+	_net_destroy_applied = false
 	current_state = ItemState.DROPPED
 	_thrower = null
 	_clear_collision_ignore()
@@ -682,10 +705,15 @@ func _net_apply_hit(data: Dictionary) -> void:
 			target.call("apply_slow")
 
 
-# 对手的道具已销毁（南瓜爆炸会在本端补一滩粘液）
+# 对手的道具已销毁（南瓜爆炸会在本端补一滩粘液与爆炸音）
 func _net_apply_destroy(data: Dictionary) -> void:
+	# 命中端与投掷端可能同时判定到这次命中并各自上报销毁，只处理第一次
+	if _net_destroy_applied:
+		return
+	_net_destroy_applied = true
 	if bool(data.get("puddle", false)):
 		global_position = data.get("pos", global_position)
+		_play_explosion_sound()
 		_spawn_slime_puddle()
 	queue_free()
 

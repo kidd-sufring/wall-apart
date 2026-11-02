@@ -58,7 +58,7 @@ func _on_match_finished(result: int) -> void:
 	else:
 		hp_bar.texture = _hp_empty
 
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	Platform.set_capture(false)
 
 	# 结算音效：按玩家视角的胜负播放
 	AudioManager.play_2d(&"win" if player_win else &"defeat", -4.0)

@@ -26,7 +26,9 @@ func _ready() -> void:
 		NetworkManager.leave_room()
 
 	GameManager.enter_menu_state()
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	Platform.set_capture(false)
+	# Web 版只提供单机玩法，隐藏局域网联机入口
+	lan_button.visible = Platform.supports_multiplayer()
 
 	for button in [single_button, lan_button, settings_button, settings_x, settings_close] as Array[Control]:
 		button.mouse_entered.connect(_on_button_hover.bind(true, button))

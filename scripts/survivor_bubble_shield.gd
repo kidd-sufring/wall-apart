@@ -114,6 +114,12 @@ func _activate() -> void:
 		# 避免在物理信号回调内直接改 monitoring 被引擎拒绝
 		shield_area.set_deferred("monitoring", true)
 
+	# 联机：开盾即上报主机，由主机按“有效窗口”判定免伤。
+	# 只等护盾接触后再上报会与命中上报跨端竞速，导致盾有时挡不住
+	if NetworkManager.is_online():
+		NetworkManager.report_shield_active(shield_duration, knockback_distance,
+			knockback_speed, knockback_max_duration)
+
 	# 护盾展开的声音
 	if body != null:
 		AudioManager.play_3d(&"shield", body.global_position + Vector3.UP * 0.9,
