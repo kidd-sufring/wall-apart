@@ -6,6 +6,9 @@
 [可运行版本](https://github.com/kidd-sufring/wall-apart/releases/tag/v1.0)
 [AI 使用声明](#5-ai-使用声明)
 
+## 演示视频
+【凑企鹅玩新游戏】 https://www.bilibili.com/video/BV1Lo4M6nEMz/?share_source=copy_web&vd_source=e41b4d8bae6ae55ce5e8f112bf96caaa
+
 ## 下载与运行（Windows 玩家）
 
 打包好的 Windows 版发布在 **GitHub Releases**：[可运行版本](https://github.com/kidd-sufring/wall-apart/releases/tag/v1.0)
